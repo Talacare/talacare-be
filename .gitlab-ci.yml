@@ -1,0 +1,15 @@
+variables:
+  VERCEL_ORG_ID: $VERCEL_ORG_ID
+
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  variables:
+    VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
+  script:
+    - npm i -g vercel
+    - vercel --confirm -t $VERCEL_TOKEN --prod
+  only:
+    - main
