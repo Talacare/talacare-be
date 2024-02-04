@@ -5,14 +5,7 @@ variables:
   VERCEL_ORG_ID: $VERCEL_ORG_ID
 
 stages:
-  - install
   - deploy
-
-install:
-  stage: install
-  script:
-    - yarn install
-    - yarn prisma generate
 
 deploy:
   stage: deploy
