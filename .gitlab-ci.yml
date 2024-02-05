@@ -11,9 +11,8 @@ stages:
 sonarqube:
   stage: sonarqube
   script:
-    - npm install
-    - npm run build
-    - sonar-scanner \
+    - npm install sonar-scanner
+    - npm sonar-scanner \
         -Dsonar.projectKey=ppl-a2_talacare-be_AY13ZcUtk9qxTTGJICtq \
         -Dsonar.sources=.
         -Dsonar.host.url=https://sonarqube.cs.ui.ac.id \
