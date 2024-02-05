@@ -5,7 +5,19 @@ variables:
   VERCEL_ORG_ID: $VERCEL_ORG_ID
 
 stages:
+  - sonarqube
   - deploy
+
+sonarqube:
+  stage: sonarqube
+  script:
+    - npm install
+    - npm run build
+    - sonar-scanner \
+        -Dsonar.projectKey=ppl-a2_talacare-be_AY13ZcUtk9qxTTGJICtq \
+        -Dsonar.sources=.
+        -Dsonar.host.url=https://sonarqube.cs.ui.ac.id \
+        -Dsonar.login=0164738eaa81cebfe4f246b4df7f8a2cbb99f071
 
 deploy:
   stage: deploy
