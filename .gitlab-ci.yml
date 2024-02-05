@@ -12,11 +12,11 @@ sonarqube:
   stage: sonarqube
   script:
     - npm install sonar-scanner
-    - npm sonar-scanner \
-        -Dsonar.projectKey=ppl-a2_talacare-be_AY13ZcUtk9qxTTGJICtq \
+    - npm run sonar-scanner \
+        -Dsonar.projectKey=$SONAR_PROJECT_KEY \
         -Dsonar.sources=.
-        -Dsonar.host.url=https://sonarqube.cs.ui.ac.id \
-        -Dsonar.login=0164738eaa81cebfe4f246b4df7f8a2cbb99f071
+        -Dsonar.host.url=$SONAR_HOST_URL \
+        -Dsonar.login=$SONAR_LOGIN
 
 deploy:
   stage: deploy
