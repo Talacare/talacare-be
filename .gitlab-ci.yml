@@ -15,7 +15,10 @@ before_script:
 analyze:
   stage: analyze
   script:
-    - sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.sources=. -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_LOGIN
+    - >
+      sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.sources=. 
+      -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_LOGIN
+      -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
   only:
     - main
 
