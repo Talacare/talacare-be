@@ -11,6 +11,11 @@ export class AppController {
     return await this.appService.getHello();
   }
 
+  @Get('/environment')
+  async getEnvironment(): Promise<string> {
+    return await this.appService.getEnvironment();
+  }
+
   @Post()
   async postUser(@Body('email') email: string): Promise<User> {
     return await this.appService.postUser(email);

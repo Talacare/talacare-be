@@ -41,9 +41,13 @@ deploy:
       if [ "$CI_COMMIT_BRANCH" = "main" ]; then
         echo "Deploying to Production"
         vercel --prod --confirm -t $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+        echo "Setting alias for Production"
+        vercel alias $VERCEL_PRODUCTION_URL --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID
       elif [ "$CI_COMMIT_BRANCH" = "staging" ]; then
         echo "Deploying to Staging"
-        vercel --confirm -t $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+        url=$(vercel --confirm -t $VERCEL_TOKEN --scope $VERCEL_ORG_ID | grep "https://")
+        echo "Setting alias for Staging"
+        vercel alias --token=$VERCEL_TOKEN set "$url" api-talacare-staging.vercel.app --scope=$VERCEL_ORG_ID
       else
         echo "Non-production or staging branch, skipping deploy"
       fi
