@@ -34,7 +34,6 @@ analyze:
     - main
     - staging
 
-
 deploy:
   stage: deploy
   script:
@@ -48,7 +47,7 @@ deploy:
         echo "Deploying to Staging"
         url=$(vercel --confirm -t $VERCEL_TOKEN --scope $VERCEL_ORG_ID | grep "https://")
         echo "Setting alias for Staging"
-        vercel alias "$url" api-talacare-staging.vercel.app --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID
+        vercel alias --token=$VERCEL_TOKEN set "$url" api-talacare-staging.vercel.app --scope=$VERCEL_ORG_ID
       else
         echo "Non-production or staging branch, skipping deploy"
       fi
