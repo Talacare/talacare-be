@@ -21,10 +21,14 @@ analyze:
 
       npm run test:cov
 
-      sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.sources=.
-      -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_LOGIN
+      sonar-scanner
+      -Dsonar.projectKey=$SONAR_PROJECT_KEY
+      -Dsonar.sources=src/
+      -Dsonar.tests=test/
+      -Dsonar.host.url=$SONAR_HOST_URL
+      -Dsonar.login=$SONAR_LOGIN
       -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-      -Dsonar.coverage.exclusions=["test/*.(t|j)s"]
+      -Dsonar.coverage.exclusions=**/*spec.ts
   only:
     - main
     - staging
