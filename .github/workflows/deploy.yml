@@ -19,7 +19,7 @@ jobs:
           node-version: '20'
       
       - name: Install dependencies
-        run: npm install
+        run: npm install && npm install -g sonarqube-scanner
       
       - name: Run tests and analyze
         run: |
@@ -48,10 +48,9 @@ jobs:
         with:
           node-version: '20'
       
-      - name: Install vercel and sonarqube scanner
+      - name: Install vercel
         run: |
           npm install -g vercel
-          npm install -g sonarqube-scanner
       
       - name: Deploy to Production or Staging
         run: |
