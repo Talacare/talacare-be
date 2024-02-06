@@ -16,7 +16,15 @@ before_script:
 analyze:
   stage: analyze
   script:
-    - sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.sources=. -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_LOGIN
+    - >
+      npm install
+
+      npm run test:cov
+
+      sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.sources=.
+      -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_LOGIN
+      -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+      -Dsonar.coverage.exclusions=["test/*.(t|j)s"]
   only:
     - main
     - staging
@@ -37,15 +45,3 @@ deploy:
   only:
     - main
     - staging
-
-
-    
-# deploy:
-#   stage: deploy
-#   variables:
-#     VERCEL_PROJECT_ID: $PROJECT_ID
-#   script:
-#     - vercel --confirm -t $VERCEL_TOKEN --prod
-
-#   only:
-#     - main
