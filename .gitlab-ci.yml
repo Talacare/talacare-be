@@ -19,6 +19,8 @@ analyze:
     - >
       npm install
 
+      npm run test
+
       npm run test:cov
 
       sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY
@@ -27,7 +29,6 @@ analyze:
       -Dsonar.login=$SONAR_LOGIN
       -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
       -Dsonar.testExecutionReportPaths=reports/test-report.xml
-      -Dsonar.genericcoverage.unitTestReportPaths=reports/test-report.xml
       -Dsonar.coverage.exclusions=**/*spec.ts
   only:
     - main
