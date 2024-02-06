@@ -49,15 +49,3 @@ deploy:
   only:
     - main
     - staging
-
-
-    
-# deploy:
-#   stage: deploy
-#   variables:
-#     VERCEL_PROJECT_ID: $PROJECT_ID
-#   script:
-#     - vercel --confirm -t $VERCEL_TOKEN --prod
-
-#   only:
-#     - main
