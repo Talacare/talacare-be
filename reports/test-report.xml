@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testExecutions version="1">
+<unitTest version="1">
     <file path="C:\Kuliah\Semester 6\Proyek Perangkat Lunak\Proyek\talacare-be\src\prisma\prisma.service.spec.ts">
-        <testCase name="PrismaService should be defined" duration="43"/>
+        <testCase name="PrismaService should be defined" duration="40"/>
     </file>
-</testExecutions>
+</unitTest>
