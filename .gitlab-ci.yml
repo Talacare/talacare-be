@@ -28,7 +28,7 @@ analyze:
       -Dsonar.host.url=$SONAR_HOST_URL
       -Dsonar.login=$SONAR_LOGIN
       -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-      -Dsonar.testExecutionReportPaths=reports/test-report.xml
+      -Dsonar.genericcoverage.testExecutionReportPaths=reports/test-report.xml
       -Dsonar.coverage.exclusions=**/*spec.ts
   only:
     - main
