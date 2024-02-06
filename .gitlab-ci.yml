@@ -3,6 +3,7 @@ default:
 
 variables:
   VERCEL_ORG_ID: $ORG_ID
+  VERCEL_PROJECT_ID: $PROJECT_ID
 
 stages:
   - analyze
@@ -18,13 +19,33 @@ analyze:
     - sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.sources=. -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_LOGIN
   only:
     - main
+    - staging
 
 deploy:
   stage: deploy
-  variables:
-    VERCEL_PROJECT_ID: $PROJECT_ID
   script:
-    - vercel --confirm -t $VERCEL_TOKEN --prod
-
+    - >
+      if [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        echo "Deploying to Production"
+        vercel --prod --confirm -t $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+      elif [ "$CI_COMMIT_BRANCH" = "staging" ]; then
+        echo "Deploying to Staging"
+        vercel --confirm -t $VERCEL_TOKEN --scope $VERCEL_ORG_ID
+      else
+        echo "Non-production or staging branch, skipping deploy"
+      fi
   only:
     - main
+    - staging
+
+
+    
+# deploy:
+#   stage: deploy
+#   variables:
+#     VERCEL_PROJECT_ID: $PROJECT_ID
+#   script:
+#     - vercel --confirm -t $VERCEL_TOKEN --prod
+
+#   only:
+#     - main
