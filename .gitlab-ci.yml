@@ -17,8 +17,8 @@ analyze:
   stage: analyze
   script:
     - >
-      npm install -g jest
-      
+      npm install
+
       npm run test:cov
 
       sonar-scanner -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.sources=.
