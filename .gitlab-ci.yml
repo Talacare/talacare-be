@@ -47,6 +47,19 @@ deploy_production:
   only:
     - main
 
+# deploy_staging:
+#   stage: deploy
+#   variables:
+#     VERCEL_PROJECT_ID: $PROJECT_ID
+#   script:
+#     - vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+#     - vercel build --token=$VERCEL_TOKEN
+#     - url=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN | grep "https://")
+#     - vercel alias --token=$VERCEL_TOKEN set "$url" api-talacare-staging.vercel.app --scope=$ORG_ID
+
+#   only:
+#     - staging
+
 deploy_staging:
   stage: deploy
   variables:
@@ -54,13 +67,11 @@ deploy_staging:
   script:
     - vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
     - vercel build --token=$VERCEL_TOKEN
-    - url=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN | grep "https://")
-    - vercel alias --token=$VERCEL_TOKEN set "$url" api-talacare-staging.vercel.app --scope=$ORG_ID
-
+    - DEPLOYMENT_URL=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN --json | jq -r .url)
+    - echo "Deployment URL: $DEPLOYMENT_URL"
+    - vercel alias $DEPLOYMENT_URL api-talacare-staging.vercel.app --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID
   only:
     - staging
-
-
 
 # deploy:
 #   stage: deploy
