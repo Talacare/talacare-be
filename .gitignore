@@ -33,7 +33,11 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+settings.json
 
 .env
 .vercel
 .scannerwork
+
+
+

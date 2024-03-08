@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
-  binaryTargets   = ["native", "rhel-openssl-1.0.x"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
 datasource db {
@@ -12,6 +12,19 @@ datasource db {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
+  id          Int           @id @default(autoincrement())
+  email       String        @unique
+  GameHistory GameHistory[]
+}
+
+model GameHistory {
+  id        Int      @id @default(autoincrement())
+  gameType  String
+  score     Int
+  startTime DateTime
+  endTime   DateTime
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId], name: "idx_userGameHistory")
 }
