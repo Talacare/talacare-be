@@ -17,9 +17,14 @@ model User {
   GameHistory GameHistory[]
 }
 
+enum GameType {
+  PUZZLE
+  JUMP_N_JUMP
+}
+
 model GameHistory {
   id        Int      @id @default(autoincrement())
-  gameType  String
+  gameType  GameType
   score     Int
   startTime DateTime
   endTime   DateTime

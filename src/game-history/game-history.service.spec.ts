@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameHistoryService } from './game-history.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { GameType } from '@prisma/client';
 
 describe('GameHistoryService', () => {
   let service: GameHistoryService;
@@ -20,7 +21,7 @@ describe('GameHistoryService', () => {
   describe('createGameHistory', () => {
     it('should create a game history record', async () => {
       const gameHistoryData = {
-        gameType: 'Type1',
+        gameType: GameType.JUMP_N_JUMP,
         score: 100,
         startTime: new Date(),
         endTime: new Date(),
