@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { GameHistoryService } from './game-history.service';
-import { PrismaModule } from 'src/prisma/prisma.module';
+import { GameHistoryController } from './game-history.controller';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
-  imports: [PrismaModule],
-  providers: [GameHistoryService],
+  controllers: [GameHistoryController],
+  providers: [GameHistoryService, PrismaService],
 })
 export class GameHistoryModule {}

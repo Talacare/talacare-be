@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { GameHistoryController } from './game-history.controller';
 import { GameType } from '@prisma/client';
 import { GameHistoryService } from './game-history.service';
+import { CreateGameHistoryDto } from './dto/create-game-history-dto';
 
 const mockGameHistoryService = {
   create: jest.fn((dto) => {
