@@ -4,5 +4,5 @@ export interface GameHistoryInput {
   score: number;
   startTime: Date;
   endTime: Date;
-  userId: number;
+  userId: string;
 }

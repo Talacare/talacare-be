@@ -9,5 +9,5 @@ export class CreateGameHistoryDto {
 
   endTime: Date;
 
-  userId: number;
+  userId: string;
 }

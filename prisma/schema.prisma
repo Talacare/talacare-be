@@ -12,7 +12,7 @@ datasource db {
 }
 
 model User {
-  id          Int           @id @default(autoincrement())
+  id          String        @id @default(uuid())
   email       String        @unique
   GameHistory GameHistory[]
 }
@@ -28,7 +28,7 @@ model GameHistory {
   score     Int
   startTime DateTime
   endTime   DateTime
-  userId    Int
+  userId    String
   user      User     @relation(fields: [userId], references: [id])
 
   @@index([userId], name: "idx_userGameHistory")
