@@ -37,4 +37,6 @@ model Schedule {
   remindTime  DateTime
   userId      String
   user        User     @relation(fields: [userId], references: [id])
+
+  @@index([userId], map: "idx_userSchedule")
 }
