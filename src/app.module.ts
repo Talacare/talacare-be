@@ -4,10 +4,12 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { GameHistoryService } from './game-history/game-history.service';
+import { GameHistoryModule } from './game-history/game-history.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), PrismaModule],
+  imports: [ConfigModule.forRoot(), PrismaModule, GameHistoryModule],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService, PrismaService, GameHistoryService],
 })
 export class AppModule {}
