@@ -31,7 +31,7 @@ describe('ScheduleController', () => {
   });
 
   describe('create', () => {
-    it('should create a new schedule record', async () => {
+    it('should create a new schedule', async () => {
       const scheduleDto: CreateScheduleDto = {
         userId: '81c41b32-7a45-4b64-a98e-928f16fc26d7',
         remindTime: new Date(),
