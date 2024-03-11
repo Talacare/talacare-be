@@ -25,7 +25,7 @@ describe('GameHistoryService', () => {
         score: 100,
         startTime: new Date(),
         endTime: new Date(),
-        userId: 1,
+        userId: '123e4567-e89b-12d3-a456-426614174000',
       };
 
       const expected = { ...gameHistoryData, id: expect.any(Number) };

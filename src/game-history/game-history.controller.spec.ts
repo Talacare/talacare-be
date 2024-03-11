@@ -38,7 +38,7 @@ describe('GameHistoryController', () => {
         score: 100,
         startTime: new Date(),
         endTime: new Date(),
-        userId: 1,
+        userId: '123e4567-e89b-12d3-a456-426614174000',
       };
 
       await expect(controller.create(gameHistoryDto)).resolves.toEqual({
