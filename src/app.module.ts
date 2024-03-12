@@ -9,7 +9,12 @@ import { GameHistoryModule } from './game-history/game-history.module';
 import { ScheduleModule } from './schedule/schedule.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), PrismaModule, GameHistoryModule, ScheduleModule],
+  imports: [
+    ConfigModule.forRoot(),
+    PrismaModule,
+    GameHistoryModule,
+    ScheduleModule,
+  ],
   controllers: [AppController],
   providers: [AppService, PrismaService, GameHistoryService],
 })

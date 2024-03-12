@@ -46,7 +46,9 @@ describe('ScheduleService', () => {
   });
 
   it('should return an empty array if the data doesnt exist', async () => {
-    jest.spyOn(prismaService.schedule, 'findMany').mockResolvedValue(expectedGetInvalidResponse);
+    jest
+      .spyOn(prismaService.schedule, 'findMany')
+      .mockResolvedValue(expectedGetInvalidResponse);
 
     const query: GetScheduleQueryDTO = { page: '1' };
     const schedules = await service.getAll(query);
@@ -57,7 +59,9 @@ describe('ScheduleService', () => {
   });
 
   it('should return an array of schedules if the data exists', async () => {
-    jest.spyOn(prismaService.schedule, 'findMany').mockResolvedValue(expectedGetValidResponse);
+    jest
+      .spyOn(prismaService.schedule, 'findMany')
+      .mockResolvedValue(expectedGetValidResponse);
 
     const query: GetScheduleQueryDTO = { page: '1' };
     const schedules = await service.getAll(query);
@@ -76,7 +80,9 @@ describe('ScheduleService', () => {
   });
 
   it('should return an empty array if query is valid but more than total data', async () => {
-    jest.spyOn(prismaService.schedule, 'findMany').mockResolvedValue(expectedGetValidResponse);
+    jest
+      .spyOn(prismaService.schedule, 'findMany')
+      .mockResolvedValue(expectedGetValidResponse);
 
     const query: GetScheduleQueryDTO = { page: '100' };
     const schedules = await service.getAll(query);
