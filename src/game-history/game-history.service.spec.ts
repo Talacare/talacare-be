@@ -5,13 +5,26 @@ import { GameType } from '@prisma/client';
 
 describe('GameHistoryService', () => {
   let service: GameHistoryService;
+  let prismaService: PrismaService;
+  const mockFn = jest.fn();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [GameHistoryService, PrismaService],
+      providers: [
+        GameHistoryService,
+        {
+          provide: PrismaService,
+          useValue: {
+            gameHistory: {
+              create: mockFn,
+            },
+          },
+        },
+      ],
     }).compile();
 
     service = module.get<GameHistoryService>(GameHistoryService);
+    prismaService = module.get<PrismaService>(PrismaService);
   });
 
   it('should be defined', () => {
@@ -29,11 +42,14 @@ describe('GameHistoryService', () => {
       };
 
       const expected = { ...gameHistoryData, id: expect.any(Number) };
-      jest.spyOn(service, 'create').mockImplementation(async () => expected);
-
+      mockFn.mockReturnValue(expected);
       const result = await service.create(gameHistoryData);
 
       expect(result).toEqual(expected);
+      expect(prismaService.gameHistory.create).toHaveBeenCalledTimes(1);
+      expect(prismaService.gameHistory.create).toHaveBeenCalledWith({
+        data: gameHistoryData,
+      });
     });
   });
 });

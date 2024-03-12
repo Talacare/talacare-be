@@ -1,6 +1,6 @@
 import { GameType } from '@prisma/client';
 export interface GameHistory {
-  id: number;
+  id: string;
   gameType: GameType;
   score: number;
   startTime: Date;
