@@ -7,6 +7,7 @@ const mockScheduleService = {
   create: jest.fn((dto) => {
     return { id: 1, ...dto };
   }),
+  delete: jest.fn(),
 };
 
 describe('ScheduleController', () => {
@@ -46,6 +47,16 @@ describe('ScheduleController', () => {
       expect(mockScheduleService.create).toHaveBeenCalledWith(
         scheduleDto,
       );
+    });
+  });
+
+  describe('delete', () => {
+    it('should delete a schedule', async () => {
+      const id = '1';
+
+      await controller.delete(id);
+
+      expect(mockScheduleService.delete).toHaveBeenCalledWith(id);
     });
   });
 });
