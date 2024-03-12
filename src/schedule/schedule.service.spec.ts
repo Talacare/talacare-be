@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ScheduleService } from './schedule.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateScheduleInput } from './interfaces/create-schedule-input.interface';
-import { ResponseUtil } from '../../src/common/utils/response.util';
+import { ResponseUtil } from '../common/utils/response.util';
 
 describe('ScheduleService', () => {
   let service: ScheduleService;
