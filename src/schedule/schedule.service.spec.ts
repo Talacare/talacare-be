@@ -12,8 +12,8 @@ describe('ScheduleService', () => {
 
   beforeEach(async () => {
     const mockFindUnique = jest.fn().mockImplementation(({ where: { id } }) => {
-      if (id === '1') { 
-        return Promise.resolve({ id }); 
+      if (id === '1') {
+        return Promise.resolve({ id });
       }
       return Promise.resolve(null);
     });
@@ -27,7 +27,7 @@ describe('ScheduleService', () => {
             schedule: {
               create: mockFn,
               findUnique: mockFindUnique,
-              delete: jest.fn().mockResolvedValue({ id: 'existing_id' }), 
+              delete: jest.fn().mockResolvedValue({ id: 'existing_id' }),
             },
           },
         },
@@ -37,7 +37,7 @@ describe('ScheduleService', () => {
 
     service = module.get<ScheduleService>(ScheduleService);
     prismaService = module.get<PrismaService>(PrismaService);
-    responseUtil = module.get<ResponseUtil>(ResponseUtil); 
+    responseUtil = module.get<ResponseUtil>(ResponseUtil);
   });
 
   it('should create a schedule', async () => {
@@ -53,7 +53,9 @@ describe('ScheduleService', () => {
 
     expect(createdSchedule).toEqual(expected);
     expect(prismaService.schedule.create).toHaveBeenCalledTimes(1);
-    expect(prismaService.schedule.create).toHaveBeenCalledWith({ data: scheduleData });
+    expect(prismaService.schedule.create).toHaveBeenCalledWith({
+      data: scheduleData,
+    });
   });
 
   it('it should delete a schedule', async () => {
@@ -64,21 +66,24 @@ describe('ScheduleService', () => {
     await service.delete(id);
 
     expect(prismaService.schedule.delete).toHaveBeenCalledTimes(1);
-    expect(prismaService.schedule.delete).toHaveBeenCalledWith({ where: { id } });
+    expect(prismaService.schedule.delete).toHaveBeenCalledWith({
+      where: { id },
+    });
   });
 
   it('should return an error when trying to delete a schedule that does not exist', async () => {
     const nonExistentId = 'non-existent-id';
     mockFn.mockResolvedValueOnce(null);
-  
+
     const result = await service.delete(nonExistentId);
-  
-    expect(result).toEqual(expect.objectContaining({
-      responseCode: 404,
-      responseMessage: `Schedule with ID ${nonExistentId} not found`,
-      responseStatus: 'FAILED',
-    }));
+
+    expect(result).toEqual(
+      expect.objectContaining({
+        responseCode: 404,
+        responseMessage: `Schedule with ID ${nonExistentId} not found`,
+        responseStatus: 'FAILED',
+      }),
+    );
     expect(prismaService.schedule.delete).not.toHaveBeenCalled();
   });
-  
 });

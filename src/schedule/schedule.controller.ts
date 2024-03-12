@@ -1,9 +1,4 @@
-import {
-  Body,
-  Controller,
-  HttpCode, HttpStatus,
-  Post
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule-dto';
 import { Schedule } from '@prisma/client';

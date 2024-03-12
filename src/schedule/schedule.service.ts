@@ -7,7 +7,9 @@ import { CreateSchedule } from './interfaces/create-schedule.interface';
 export class ScheduleService {
   constructor(private prisma: PrismaService) {}
 
-  public async create(scheduleData: CreateScheduleInput): Promise<CreateSchedule> {
+  public async create(
+    scheduleData: CreateScheduleInput,
+  ): Promise<CreateSchedule> {
     return this.prisma.schedule.create({
       data: scheduleData,
     });

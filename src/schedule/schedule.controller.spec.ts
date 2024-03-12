@@ -44,9 +44,7 @@ describe('ScheduleController', () => {
         ...scheduleDto,
       });
 
-      expect(mockScheduleService.create).toHaveBeenCalledWith(
-        scheduleDto,
-      );
+      expect(mockScheduleService.create).toHaveBeenCalledWith(scheduleDto);
     });
   });
 
