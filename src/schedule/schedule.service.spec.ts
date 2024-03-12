@@ -11,10 +11,7 @@ describe('ScheduleService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ScheduleService,
-        PrismaService,
-      ],
+      providers: [ScheduleService, PrismaService],
     }).compile();
 
     service = module.get<ScheduleService>(ScheduleService);
@@ -34,65 +31,67 @@ describe('ScheduleService', () => {
 
     expect(createdSchedule).toEqual(expected);
     expect(prismaService.schedule.create).toHaveBeenCalledTimes(1);
-    expect(prismaService.schedule.create).toHaveBeenCalledWith({ data: scheduleData });
+    expect(prismaService.schedule.create).toHaveBeenCalledWith({
+      data: scheduleData,
+    });
   });
-  
+
   it('should return an empty array if the data doesnt exist', async () => {
-    const expected: Schedule[] = []
+    const expected: Schedule[] = [];
     jest.spyOn(prismaService.schedule, 'findMany').mockResolvedValue(expected);
-    
-    const query: GetScheduleQueryDTO = { page: "1" }
-    const schedules = await service.getAll(query)
-    
-    expect(schedules).toEqual(expected)
-    expect(schedules).toHaveLength(expected.length)
+
+    const query: GetScheduleQueryDTO = { page: '1' };
+    const schedules = await service.getAll(query);
+
+    expect(schedules).toEqual(expected);
+    expect(schedules).toHaveLength(expected.length);
     expect(prismaService.schedule.findMany).toHaveBeenCalledTimes(1);
-  })
+  });
 
   it('should return an array of schedules if the data exists', async () => {
     const expected: Schedule[] = [
       {
-        id: "random-uuid",
+        id: 'random-uuid',
         hour: 10,
         minute: 50,
-        userId: "random-user-uuid"
-      }
-    ]
+        userId: 'random-user-uuid',
+      },
+    ];
     jest.spyOn(prismaService.schedule, 'findMany').mockResolvedValue(expected);
-    
-    const query: GetScheduleQueryDTO = { page: "1" }
-    const schedules = await service.getAll(query)
-    
-    expect(schedules).toEqual(expected)
-    expect(schedules).toHaveLength(expected.length)
+
+    const query: GetScheduleQueryDTO = { page: '1' };
+    const schedules = await service.getAll(query);
+
+    expect(schedules).toEqual(expected);
+    expect(schedules).toHaveLength(expected.length);
     expect(prismaService.schedule.findMany).toHaveBeenCalledTimes(1);
-  })
-  
-  it('should return an empty array if query is not valid', async () => {    
-    const expected: Schedule[] = []
-    const query: GetScheduleQueryDTO = { page: '' }
-    const schedules = await service.getAll(query)
-    
-    expect(schedules).toEqual(expected)
-    expect(schedules).toHaveLength(expected.length)
-  })
-  
+  });
+
+  it('should return an empty array if query is not valid', async () => {
+    const expected: Schedule[] = [];
+    const query: GetScheduleQueryDTO = { page: '' };
+    const schedules = await service.getAll(query);
+
+    expect(schedules).toEqual(expected);
+    expect(schedules).toHaveLength(expected.length);
+  });
+
   it('should return an empty array if query is valid but more than total data', async () => {
     const expected: Schedule[] = [
       {
-        id: "random-uuid",
+        id: 'random-uuid',
         hour: 10,
         minute: 50,
-        userId: "random-user-uuid"
-      }
-    ]
+        userId: 'random-user-uuid',
+      },
+    ];
     jest.spyOn(prismaService.schedule, 'findMany').mockResolvedValue(expected);
-    
-    const query: GetScheduleQueryDTO = { page: "100" }
-    const schedules = await service.getAll(query)
-    
-    expect(schedules).toEqual([])
-    expect(schedules).toHaveLength(0)
+
+    const query: GetScheduleQueryDTO = { page: '100' };
+    const schedules = await service.getAll(query);
+
+    expect(schedules).toEqual([]);
+    expect(schedules).toHaveLength(0);
     expect(prismaService.schedule.findMany).toHaveBeenCalledTimes(1);
-  })
+  });
 });
