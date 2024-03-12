@@ -33,7 +33,7 @@ enum GameType {
 }
 
 model Schedule {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   hour        Int
   minute      Int
   userId      String

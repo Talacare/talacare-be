@@ -1,5 +1,5 @@
 export interface CreateSchedule {
-  id: number;
+  id: string;
   hour: number;
   minute: number;
   userId: string;
