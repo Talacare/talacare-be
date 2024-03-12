@@ -7,7 +7,7 @@ import { Schedule } from '@prisma/client';
 import { ResponseUtil } from '../common/utils/response.util';
 import { BadRequestException } from '@nestjs/common';
 
-const mockScheduleService = {
+const mockScheduleServiceInstance = {
   create: jest.fn((dto) => {
     return { id: 1, ...dto };
   }),
@@ -25,7 +25,7 @@ describe('ScheduleController', () => {
       providers: [
         {
           provide: ScheduleService,
-          useValue: mockScheduleService,
+          useValue: mockScheduleServiceInstance,
         },
         ResponseUtil,
       ],
@@ -52,7 +52,9 @@ describe('ScheduleController', () => {
         ...scheduleDto,
       });
 
-      expect(mockScheduleService.create).toHaveBeenCalledWith(scheduleDto);
+      expect(mockScheduleServiceInstance.create).toHaveBeenLastCalledWith(
+        scheduleDto,
+      );
     });
   });
 
@@ -62,11 +64,15 @@ describe('ScheduleController', () => {
 
       await controller.delete(id);
 
-      expect(mockScheduleService.delete).toHaveBeenCalledWith(id);
+      expect(mockScheduleServiceInstance.delete).toHaveBeenLastCalledWith(id);
     });
   });
 
   describe('getAll', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
     it('should get all schedules for a valid page', async () => {
       const query: GetScheduleQueryDTO = { page: '1' };
       const expectedSchedules: Schedule[] = [
@@ -77,56 +83,70 @@ describe('ScheduleController', () => {
           userId: 'random-user-uuid',
         },
       ];
-      mockScheduleService.getAll.mockResolvedValue(expectedSchedules);
+      mockScheduleServiceInstance.getAll.mockResolvedValue(expectedSchedules);
 
       const schedules = await controller.getAll(query);
 
       expect(schedules).toEqual(
         responseUtil.response({}, { data: expectedSchedules }),
       );
-      expect(mockScheduleService.getAll).toHaveBeenCalledWith(query);
+      expect(mockScheduleServiceInstance.getAll).toHaveBeenLastCalledWith(
+        query,
+      );
     });
 
     it('should return an empty array for a page beyond the total number of pages', async () => {
       const query: GetScheduleQueryDTO = { page: '1000' };
       const expectedSchedules: Schedule[] = [];
-      mockScheduleService.getAll.mockResolvedValue(expectedSchedules);
+      mockScheduleServiceInstance.getAll.mockResolvedValue(expectedSchedules);
 
       const schedules = await controller.getAll(query);
 
       expect(schedules).toEqual(
         responseUtil.response({}, { data: expectedSchedules }),
       );
-      expect(mockScheduleService.getAll).toHaveBeenCalledWith(query);
+      expect(mockScheduleServiceInstance.getAll).toHaveBeenLastCalledWith(
+        query,
+      );
     });
 
     it('should return an error for invalid query parameters (page is not a number)', async () => {
       const query: GetScheduleQueryDTO = { page: 'abc' };
-      mockScheduleService.getAll.mockRejectedValue(new BadRequestException());
+      mockScheduleServiceInstance.getAll.mockRejectedValue(
+        new BadRequestException(),
+      );
 
       expect(controller.getAll(query)).rejects.toThrow(BadRequestException);
-      expect(mockScheduleService.getAll).toHaveBeenCalledWith(query);
+      expect(mockScheduleServiceInstance.getAll).toHaveBeenLastCalledWith(
+        query,
+      );
     });
 
     it('should return an error for invalid query parameters (page is not a positive number)', async () => {
       const query: GetScheduleQueryDTO = { page: '-1' };
-      mockScheduleService.getAll.mockRejectedValue(new BadRequestException());
+      mockScheduleServiceInstance.getAll.mockRejectedValue(
+        new BadRequestException(),
+      );
 
       await expect(controller.getAll(query)).rejects.toThrow(
         BadRequestException,
       );
-      expect(mockScheduleService.getAll).toHaveBeenCalledWith(query);
+      expect(mockScheduleServiceInstance.getAll).toHaveBeenLastCalledWith(
+        query,
+      );
     });
 
     it('should return an error if an unexpected error occurs in the service', async () => {
       const query: GetScheduleQueryDTO = { page: '1' };
       const expectedError = new Error('Unexpected error');
-      mockScheduleService.getAll.mockRejectedValue(expectedError);
+      mockScheduleServiceInstance.getAll.mockRejectedValue(expectedError);
 
       await expect(controller.getAll(query)).rejects.toThrowError(
         expectedError,
       );
-      expect(mockScheduleService.getAll).toHaveBeenCalledWith(query);
+      expect(mockScheduleServiceInstance.getAll).toHaveBeenLastCalledWith(
+        query,
+      );
     });
   });
 });
