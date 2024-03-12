@@ -16,7 +16,7 @@ import { ScheduleService } from './schedule/schedule.service';
     PrismaModule,
     GameHistoryModule,
     ScheduleModule,
-    CommonModule
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, GameHistoryService, ScheduleService],

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
-import { ResponseInterface } from './response.service';
+import { ResponseInterface } from './response.interface';
 
 @Injectable()
 export class ResponseUtil {

@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <unitTest version="1">
+    <file path="/Users/michaelsinanta/Documents/SEMESTER 6/TALACARE2/talacare-be/src/game-history/game-history.service.spec.ts">
+        <testCase name="GameHistoryService should be defined" duration="48"/>
+        <testCase name="GameHistoryService createGameHistory should create a game history record" duration="15"/>
+    </file>
     <file path="/Users/michaelsinanta/Documents/SEMESTER 6/TALACARE2/talacare-be/src/prisma/prisma.service.spec.ts">
-        <testCase name="PrismaService should be defined" duration="83"/>
+        <testCase name="PrismaService should be defined" duration="12"/>
     </file>
     <file path="/Users/michaelsinanta/Documents/SEMESTER 6/TALACARE2/talacare-be/src/schedule/schedule.service.spec.ts">
-        <testCase name="ScheduleService should create a schedule" duration="11"/>
-        <testCase name="ScheduleService it should delete a schedule" duration="3"/>
-        <testCase name="ScheduleService should return an error when trying to delete a schedule that does not exist" duration="3"/>
-    </file>
-    <file path="/Users/michaelsinanta/Documents/SEMESTER 6/TALACARE2/talacare-be/src/game-history/game-history.service.spec.ts">
-        <testCase name="GameHistoryService should be defined" duration="13"/>
-        <testCase name="GameHistoryService createGameHistory should create a game history record" duration="7"/>
+        <testCase name="ScheduleService should create a schedule" duration="9"/>
+        <testCase name="ScheduleService it should delete a schedule" duration="4"/>
+        <testCase name="ScheduleService should return an error when trying to delete a schedule that does not exist" duration="2"/>
     </file>
     <file path="/Users/michaelsinanta/Documents/SEMESTER 6/TALACARE2/talacare-be/src/game-history/game-history.controller.spec.ts">
-        <testCase name="GameHistoryController should be defined" duration="6"/>
+        <testCase name="GameHistoryController should be defined" duration="12"/>
         <testCase name="GameHistoryController create should create a new game history record" duration="4"/>
     </file>
     <file path="/Users/michaelsinanta/Documents/SEMESTER 6/TALACARE2/talacare-be/src/schedule/schedule.controller.spec.ts">
-        <testCase name="ScheduleController should be defined" duration="6"/>
-        <testCase name="ScheduleController create should create a new schedule" duration="4"/>
+        <testCase name="ScheduleController should be defined" duration="9"/>
+        <testCase name="ScheduleController create should create a new schedule" duration="2"/>
         <testCase name="ScheduleController delete should delete a schedule" duration="2"/>
     </file>
 </unitTest>
