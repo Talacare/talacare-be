@@ -7,6 +7,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { GameHistoryService } from './game-history/game-history.service';
 import { GameHistoryModule } from './game-history/game-history.module';
 import { ScheduleModule } from './schedule/schedule.module';
+import { CommonModule } from './common/common.module';
+import { ScheduleService } from './schedule/schedule.service';
 
 @Module({
   imports: [
@@ -14,8 +16,9 @@ import { ScheduleModule } from './schedule/schedule.module';
     PrismaModule,
     GameHistoryModule,
     ScheduleModule,
+    CommonModule
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService, GameHistoryService],
+  providers: [AppService, PrismaService, GameHistoryService, ScheduleService],
 })
 export class AppModule {}
