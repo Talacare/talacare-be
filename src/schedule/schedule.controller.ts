@@ -1,15 +1,12 @@
 import {
   Body,
   Controller,
-  HttpCode,
-  HttpException,
-  HttpStatus,
-  Post,
+  HttpCode, HttpStatus,
+  Post
 } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule-dto';
 import { Schedule } from '@prisma/client';
-import { CreateScheduleInput } from './interfaces/create-schedule-input.interface';
 
 @Controller('schedule')
 export class ScheduleController {

@@ -1,5 +1,4 @@
-import { IsInt, IsNotEmpty, IsString, IsUUID, Max, Min, validate } from 'class-validator';
-import { ValidationArguments } from 'class-validator/types/validation/ValidationArguments';
+import { IsInt, IsUUID, Max, Min } from 'class-validator';
 
 export class CreateScheduleDto {
   @IsInt()
