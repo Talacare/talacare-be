@@ -7,7 +7,6 @@ import { ResponseUtil } from '../common/utils/response.util';
 describe('ScheduleService', () => {
   let service: ScheduleService;
   let prismaService: PrismaService;
-  let responseUtil: ResponseUtil;
   const mockFn = jest.fn();
 
   beforeEach(async () => {
