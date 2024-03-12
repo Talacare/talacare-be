@@ -6,7 +6,7 @@ import { CreateGameHistoryDto } from './dto/create-game-history-dto';
 
 const mockGameHistoryService = {
   create: jest.fn((dto) => {
-    return { id: Date.now(), ...dto };
+    return { id: '123e4567-e89b-12d3-a456-426614174001', ...dto };
   }),
 };
 
@@ -41,10 +41,14 @@ describe('GameHistoryController', () => {
         userId: '123e4567-e89b-12d3-a456-426614174000',
       };
 
-      await expect(controller.create(gameHistoryDto)).resolves.toEqual({
-        id: expect.any(Number),
+      const expected = {
         ...gameHistoryDto,
-      });
+        id: expect.any(String),
+      };
+
+      await expect(controller.create(gameHistoryDto)).resolves.toEqual(
+        expected,
+      );
 
       expect(mockGameHistoryService.create).toHaveBeenCalledWith(
         gameHistoryDto,

@@ -12,32 +12,32 @@ model User {
   id          String        @id @default(uuid())
   email       String        @unique
   GameHistory GameHistory[]
-  Schedule Schedule[]
+  Schedule    Schedule[]
 }
 
 model GameHistory {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
+  gameType  GameType
   score     Int
   startTime DateTime
   endTime   DateTime
   userId    String
-  gameType  GameType
   user      User     @relation(fields: [userId], references: [id])
 
   @@index([userId], map: "idx_userGameHistory")
 }
 
+model Schedule {
+  id     String @id @default(uuid())
+  userId String
+  hour   Int
+  minute Int
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([userId], map: "idx_userSchedule")
+}
+
 enum GameType {
   PUZZLE
   JUMP_N_JUMP
-}
-
-model Schedule {
-  id          String   @id @default(uuid())
-  hour        Int
-  minute      Int
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-
-  @@index([userId], map: "idx_userSchedule")
 }
