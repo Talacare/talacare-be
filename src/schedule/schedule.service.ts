@@ -17,8 +17,8 @@ export class ScheduleService {
 
   async getAll({ page }: GetScheduleQueryDTO): Promise<Schedule[]> {
     const LIMIT = 10
-    const startIndex = (parseInt(page) - 1) * LIMIT;
-    const endIndex = startIndex + LIMIT;
+    const startIndex = (parseInt(page) - 1) * LIMIT
+    const endIndex = startIndex + LIMIT
 
     const schedules = await this.prisma.schedule.findMany()
     return schedules.slice(startIndex, endIndex)
