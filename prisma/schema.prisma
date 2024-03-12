@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-1.0.x"]
@@ -15,6 +12,19 @@ model User {
   id          String        @id @default(uuid())
   email       String        @unique
   GameHistory GameHistory[]
+  Schedule Schedule[]
+}
+
+model GameHistory {
+  id        Int      @id @default(autoincrement())
+  score     Int
+  startTime DateTime
+  endTime   DateTime
+  userId    String
+  gameType  GameType
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId], map: "idx_userGameHistory")
 }
 
 enum GameType {
@@ -22,14 +32,12 @@ enum GameType {
   JUMP_N_JUMP
 }
 
-model GameHistory {
-  id        Int      @id @default(autoincrement())
-  gameType  GameType
-  score     Int
-  startTime DateTime
-  endTime   DateTime
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+model Schedule {
+  id          String   @id @default(uuid())
+  hour        Int
+  minute      Int
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
 
-  @@index([userId], name: "idx_userGameHistory")
+  @@index([userId], map: "idx_userSchedule")
 }
