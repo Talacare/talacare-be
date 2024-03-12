@@ -1,16 +1,43 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
-  binaryTargets   = ["native", "rhel-openssl-1.0.x"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
+  id          String        @id @default(uuid())
+  email       String        @unique
+  GameHistory GameHistory[]
+  Schedule    Schedule[]
+}
+
+model GameHistory {
+  id        String   @id @default(uuid())
+  gameType  GameType
+  score     Int
+  startTime DateTime
+  endTime   DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId], map: "idx_userGameHistory")
+}
+
+model Schedule {
+  id     String @id @default(uuid())
+  userId String
+  hour   Int
+  minute Int
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([userId], map: "idx_userSchedule")
+}
+
+enum GameType {
+  PUZZLE
+  JUMP_N_JUMP
 }
