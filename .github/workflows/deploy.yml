@@ -33,12 +33,12 @@ jobs:
           npm run test:cov
           sonar-scanner \
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
-            -Dsonar.sources=. \
+            -Dsonar.sources=src/ \
             -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
             -Dsonar.login=${{ secrets.SONAR_LOGIN }} \
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
             -Dsonar.genericcoverage.testExecutionReportPaths=reports/test-report.xml \
-            -Dsonar.coverage.exclusions=**/*spec.ts
+            -Dsonar.coverage.exclusions=**/*.yml,**/*spec.ts
 
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging'
 

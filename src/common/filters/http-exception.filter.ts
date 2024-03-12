@@ -27,17 +27,23 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const handlePrismaQueryError =
       process.env.NODE_ENV === 'production' && isPrismaError;
 
-    const responseCode = handlePrismaQueryError
-      ? HttpStatus.BAD_REQUEST
-      : exception instanceof HttpException
-      ? exception.getStatus()
-      : HttpStatus.INTERNAL_SERVER_ERROR;
+    let responseCode: HttpStatus;
+    if (handlePrismaQueryError) {
+      responseCode = HttpStatus.BAD_REQUEST;
+    } else if (exception instanceof HttpException) {
+      responseCode = exception.getStatus();
+    } else {
+      responseCode = HttpStatus.INTERNAL_SERVER_ERROR;
+    }
 
-    const responseMessage = handlePrismaQueryError
-      ? 'Invalid query'
-      : exception.response?.statusCode === 400
-      ? exception.response?.message
-      : exception.message;
+    let responseMessage: string;
+    if (handlePrismaQueryError) {
+      responseMessage = 'Invalid query';
+    } else if (exception.response?.statusCode === 400) {
+      responseMessage = exception.response?.message;
+    } else {
+      responseMessage = exception.message;
+    }
 
     const exceptionMessage =
       exception.response?.statusCode === 400
