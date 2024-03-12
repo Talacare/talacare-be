@@ -7,7 +7,6 @@ import { ResponseUtil } from '../common/utils/response.util';
 describe('ScheduleService', () => {
   let service: ScheduleService;
   let prismaService: PrismaService;
-  let responseUtil: ResponseUtil;
   const mockFn = jest.fn();
 
   beforeEach(async () => {
@@ -37,7 +36,6 @@ describe('ScheduleService', () => {
 
     service = module.get<ScheduleService>(ScheduleService);
     prismaService = module.get<PrismaService>(PrismaService);
-    responseUtil = module.get<ResponseUtil>(ResponseUtil);
   });
 
   it('should create a schedule', async () => {
@@ -63,11 +61,17 @@ describe('ScheduleService', () => {
     const expected = { id };
     mockFn.mockResolvedValueOnce(expected);
 
-    await service.delete(id);
+    const deleteResult = await service.delete(id);
 
     expect(prismaService.schedule.delete).toHaveBeenCalledTimes(1);
     expect(prismaService.schedule.delete).toHaveBeenCalledWith({
       where: { id },
+    });
+
+    expect(deleteResult).toEqual({
+      responseCode: 200,
+      responseMessage: 'Data deleted successfully',
+      responseStatus: 'SUCCESS',
     });
   });
 
@@ -75,9 +79,9 @@ describe('ScheduleService', () => {
     const nonExistentId = 'non-existent-id';
     mockFn.mockResolvedValueOnce(null);
 
-    const result = await service.delete(nonExistentId);
+    const deleteResult = await service.delete(nonExistentId);
 
-    expect(result).toEqual(
+    expect(deleteResult).toEqual(
       expect.objectContaining({
         responseCode: 404,
         responseMessage: `Schedule with ID ${nonExistentId} not found`,
