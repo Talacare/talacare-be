@@ -1,4 +1,5 @@
 export interface CreateScheduleInput {
-  remindTime: Date;
+  hour: number;
+  minute: number;
   userId: string;
 }

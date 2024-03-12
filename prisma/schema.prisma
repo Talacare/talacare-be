@@ -34,7 +34,8 @@ enum GameType {
 
 model Schedule {
   id          Int      @id @default(autoincrement())
-  remindTime  DateTime
+  hour        Int
+  minute      Int
   userId      String
   user        User     @relation(fields: [userId], references: [id])
 

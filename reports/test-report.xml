@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <unitTest version="1">
-    <file path="D:\talacare-be\src\prisma\prisma.service.spec.ts">
-        <testCase name="PrismaService should be defined" duration="32"/>
-    </file>
-    <file path="D:\talacare-be\src\schedule\schedule.service.spec.ts">
-        <testCase name="ScheduleService should be defined" duration="33"/>
-        <testCase name="ScheduleService createSchedule should create a schedule record" duration="12"/>
-    </file>
-    <file path="D:\talacare-be\src\game-history\game-history.service.spec.ts">
-        <testCase name="GameHistoryService should be defined" duration="39"/>
-        <testCase name="GameHistoryService createGameHistory should create a game history record" duration="21"/>
-    </file>
     <file path="D:\talacare-be\src\schedule\schedule.controller.spec.ts">
-        <testCase name="ScheduleController should be defined" duration="11"/>
-        <testCase name="ScheduleController create should create a new schedule record" duration="4"/>
+        <testCase name="ScheduleController should be defined" duration="17"/>
+        <testCase name="ScheduleController create should create a new schedule" duration="6"/>
     </file>
     <file path="D:\talacare-be\src\game-history\game-history.controller.spec.ts">
-        <testCase name="GameHistoryController should be defined" duration="12"/>
-        <testCase name="GameHistoryController create should create a new game history record" duration="5"/>
+        <testCase name="GameHistoryController should be defined" duration="17"/>
+        <testCase name="GameHistoryController create should create a new game history record" duration="7"/>
+    </file>
+    <file path="D:\talacare-be\src\prisma\prisma.service.spec.ts">
+        <testCase name="PrismaService should be defined" duration="682"/>
+    </file>
+    <file path="D:\talacare-be\src\schedule\schedule.service.spec.ts">
+        <testCase name="ScheduleService should be defined" duration="590"/>
+        <testCase name="ScheduleService createSchedule should create a schedule" duration="8"/>
+    </file>
+    <file path="D:\talacare-be\src\game-history\game-history.service.spec.ts">
+        <testCase name="GameHistoryService should be defined" duration="681"/>
+        <testCase name="GameHistoryService createGameHistory should create a game history record" duration="9"/>
     </file>
 </unitTest>
