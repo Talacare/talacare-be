@@ -1,5 +1,6 @@
-import { Body, Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Req } from '@nestjs/common';
 import { ExportDataService } from './export-data.service';
+import { ResponseUtil } from 'src/common/utils/response.util';
 
 @Controller('export-data')
 export class ExportDataController {
@@ -7,7 +8,7 @@ export class ExportDataController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async export(): Promise<string> {
-    return 'hello world';
+  async export(@Req() request: Request): Promise<string> {
+    return await this.exportDataService.generate();
   }
 }

@@ -18,6 +18,7 @@ import { ScheduleService } from './schedule/schedule.service';
     GameHistoryModule,
     ScheduleModule,
     CommonModule,
+    ExportDataModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, GameHistoryService, ScheduleService],
