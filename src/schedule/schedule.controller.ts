@@ -31,7 +31,7 @@ export class ScheduleController {
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id') id: string): Promise<void> {
     await this.scheduleService.delete(id);
     return this.responseUtil.response({
