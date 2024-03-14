@@ -34,7 +34,6 @@ analyze:
     - main
     - staging
 
-
 deploy:
   stage: deploy
   script:
