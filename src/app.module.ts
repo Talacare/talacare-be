@@ -11,6 +11,8 @@ import { CommonModule } from './common/common.module';
 import { ScheduleService } from './schedule/schedule.service';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
@@ -19,6 +21,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
     GameHistoryModule,
     ScheduleModule,
     CommonModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
@@ -26,6 +29,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
     PrismaService,
     GameHistoryService,
     ScheduleService,
+    AuthService,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
