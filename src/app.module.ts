@@ -13,15 +13,17 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
+import { FirebaseModule } from './firebase/firebase.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ cache: true }),
     PrismaModule,
     GameHistoryModule,
     ScheduleModule,
     CommonModule,
     AuthModule,
+    FirebaseModule,
   ],
   controllers: [AppController],
   providers: [

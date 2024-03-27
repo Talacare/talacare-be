@@ -13,10 +13,11 @@ import { PrismaService } from 'src/prisma/prisma.service';
   controllers: [AuthController],
   providers: [AuthService, PrismaService],
 })
-export class AuthModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .forRoutes({ path: 'auth', method: RequestMethod.GET });
-  }
-}
+// export class AuthModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer
+//       .apply(AuthMiddleware)
+//       .forRoutes({ path: 'auth', method: RequestMethod.GET });
+//   }
+// }
+export class AuthModule {}
