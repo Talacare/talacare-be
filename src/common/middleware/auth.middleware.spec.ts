@@ -1,7 +1,7 @@
 import { AuthMiddleware } from './auth.middleware';
 import { ResponseUtil } from '../utils/response.util';
 
-process.env.JWTSECRET = 'PPLAKECE';
+process.env.JWT_SECRET = 'SECRETCODE';
 
 describe('AuthMiddleware', () => {
   let middleware: AuthMiddleware;
@@ -16,7 +16,7 @@ describe('AuthMiddleware', () => {
     const req: any = {
       headers: {
         authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWQiOiJ2YWxpZF9pZCIsImVtYWlsIjoidmFsaWRfZW1haWxAZXhhbXBsZS5jb20iLCJpYXQiOjE1MTYyMzkwMjJ9.sLgDN9EDr-SLRNML0eBdfzkfV0MkJRTiKeoxO80omhk',
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZjE2YjE0ZWUtZjU5NC00YjdhLWJmMWQtYWZlNjdhOTcwNGEyIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNzExNTIzMDA5LCJleHAiOjE3MTE3ODIyMDl9.RrE1lahlh7ja3MIA5e_AEWrpKP1_yDJKuCmoI1P16AA',
       },
     };
     const res: any = {
@@ -29,13 +29,11 @@ describe('AuthMiddleware', () => {
 
     expect(next).toHaveBeenCalled();
 
-    expect(req.user).toEqual({
-      id: 'valid_id',
-      email: 'valid_email@example.com',
-    });
+    expect(req.id).toEqual('f16b14ee-f594-4b7a-bf1d-afe67a9704a2');
+    expect(req.email).toEqual('test@test.com');
   });
 
-  it('should  return UNAUTHORIZED if authorization header is present and invalid', () => {
+  it('should  return Access token invalid if authorization header is present and invalid', () => {
     const req: any = {
       headers: {
         authorization: 'Bearer invalid_token_here',
@@ -53,11 +51,11 @@ describe('AuthMiddleware', () => {
     expect(res.json).toHaveBeenCalledWith({
       responseCode: 401,
       responseStatus: 'FAILED',
-      responseMessage: 'Unauthorized',
+      responseMessage: 'Access token invalid',
     });
   });
 
-  it('should return UNAUTHORIZED if authorization header is missing', () => {
+  it('should return Authorization token is missing in the request header if authorization header is missing', () => {
     const req: any = {
       headers: {},
     };
@@ -73,12 +71,12 @@ describe('AuthMiddleware', () => {
     expect(res.json).toHaveBeenCalledWith({
       responseCode: 401,
       responseStatus: 'FAILED',
-      responseMessage: 'Unauthorized',
+      responseMessage: 'Authorization token is missing in the request header',
     });
     expect(next).not.toHaveBeenCalled();
   });
 
-  it('should return UNAUTHORIZED if authorization header is invalid', () => {
+  it('should return Bearer is missing in the request header if authorization header is invalid', () => {
     const req: any = {
       headers: {
         authorization: 'Invalid_Header',
@@ -96,7 +94,7 @@ describe('AuthMiddleware', () => {
     expect(res.json).toHaveBeenCalledWith({
       responseCode: 401,
       responseStatus: 'FAILED',
-      responseMessage: 'Unauthorized',
+      responseMessage: 'Bearer is missing in the request header',
     });
     expect(next).not.toHaveBeenCalled();
   });

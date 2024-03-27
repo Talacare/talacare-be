@@ -12,28 +12,42 @@ export class AuthMiddleware implements NestMiddleware {
   use(req: CustomRequest, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
 
-    const resUnauthorized = this.responseUtil.response({
-      responseCode: HttpStatus.UNAUTHORIZED,
-      responseStatus: 'FAILED',
-      responseMessage: 'Unauthorized',
-    });
     if (!authHeader) {
-      return res.status(HttpStatus.UNAUTHORIZED).json(resUnauthorized);
+      return res.status(HttpStatus.UNAUTHORIZED).json(
+        this.responseUtil.response({
+          responseCode: HttpStatus.UNAUTHORIZED,
+          responseStatus: 'FAILED',
+          responseMessage:
+            'Authorization token is missing in the request header',
+        }),
+      );
     }
 
     if (authHeader.startsWith('Bearer ')) {
       const token = authHeader.substring(7, authHeader.length);
-      verify(token, process.env.JWTSECRET, (err, decoded: any) => {
+      verify(token, process.env.JWT_SECRET, (err, decoded: any) => {
         if (err) {
-          return res.status(HttpStatus.UNAUTHORIZED).json(resUnauthorized);
+          return res.status(HttpStatus.UNAUTHORIZED).json(
+            this.responseUtil.response({
+              responseCode: HttpStatus.UNAUTHORIZED,
+              responseStatus: 'FAILED',
+              responseMessage: 'Access token invalid',
+            }),
+          );
         } else {
+          req.id = decoded.user_id;
+          req.email = decoded.email;
           next();
-
-          req.user = { id: decoded.id, email: decoded.email };
         }
       });
     } else {
-      return res.status(HttpStatus.UNAUTHORIZED).json(resUnauthorized);
+      return res.status(HttpStatus.UNAUTHORIZED).json(
+        this.responseUtil.response({
+          responseCode: HttpStatus.UNAUTHORIZED,
+          responseStatus: 'FAILED',
+          responseMessage: 'Bearer is missing in the request header',
+        }),
+      );
     }
   }
 }
