@@ -3,28 +3,24 @@ import { GameHistoryController } from './game-history.controller';
 import { GameType } from '@prisma/client';
 import { GameHistoryService } from './game-history.service';
 import { CreateGameHistoryDto } from './dto/create-game-history-dto';
-
-const mockGameHistoryService = {
-  create: jest.fn((dto) => {
-    return { id: '123e4567-e89b-12d3-a456-426614174001', ...dto };
-  }),
-};
+import { HttpStatus } from '@nestjs/common';
+import { ResponseUtil } from '../common/utils/response.util';
+import { PrismaService } from '../prisma/prisma.service';
 
 describe('GameHistoryController', () => {
   let controller: GameHistoryController;
+  let gameHistoryService: GameHistoryService;
+  let responseUtil: ResponseUtil;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [GameHistoryController],
-      providers: [
-        {
-          provide: GameHistoryService,
-          useValue: mockGameHistoryService,
-        },
-      ],
+      providers: [GameHistoryService, ResponseUtil, PrismaService],
     }).compile();
 
     controller = module.get<GameHistoryController>(GameHistoryController);
+    gameHistoryService = module.get<GameHistoryService>(GameHistoryService);
+    responseUtil = module.get<ResponseUtil>(ResponseUtil);
   });
 
   it('should be defined', () => {
@@ -41,18 +37,47 @@ describe('GameHistoryController', () => {
         userId: '123e4567-e89b-12d3-a456-426614174000',
       };
 
-      const expected = {
+      const expectedResult = {
         ...gameHistoryDto,
         id: expect.any(String),
       };
 
-      await expect(controller.create(gameHistoryDto)).resolves.toEqual(
-        expected,
-      );
+      jest
+        .spyOn(gameHistoryService, 'create')
+        .mockResolvedValue(expectedResult);
+      jest.spyOn(responseUtil, 'response');
 
-      expect(mockGameHistoryService.create).toHaveBeenCalledWith(
-        gameHistoryDto,
+      const result = await controller.create(gameHistoryDto);
+
+      expect(result.responseCode).toEqual(HttpStatus.CREATED);
+      expect(result.responseStatus).toEqual('SUCCESS');
+      expect(result.responseMessage).toEqual(
+        'Game history created successfully',
       );
+      expect(result.data).toEqual(expectedResult);
+      expect(gameHistoryService.create).toHaveBeenCalledWith(gameHistoryDto);
+    });
+
+    it('should handle error when creating game history', async () => {
+      const gameHistoryDto: CreateGameHistoryDto = {
+        gameType: 'PUZZLE',
+        score: 100,
+        startTime: new Date(),
+        endTime: new Date(),
+        userId: '123e4567-e89b-12d3-a456-426614174000',
+      };
+
+      const errorMessage = 'Failed to create game history';
+      jest
+        .spyOn(gameHistoryService, 'create')
+        .mockRejectedValue(new Error(errorMessage));
+      jest.spyOn(responseUtil, 'response');
+
+      const result = await controller.create(gameHistoryDto);
+
+      expect(result.responseCode).toEqual(HttpStatus.INTERNAL_SERVER_ERROR);
+      expect(result.responseStatus).toEqual('FAILED');
+      expect(result.responseMessage).toEqual('Failed to create game history');
     });
   });
 });
