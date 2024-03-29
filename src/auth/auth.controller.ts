@@ -2,10 +2,8 @@ import {
   Controller,
   Get,
   HttpCode,
-  HttpException,
   HttpStatus,
   Req,
-  Res,
 } from '@nestjs/common';
 import { ResponseUtil } from '../common/utils/response.util';
 import { AuthService } from './auth.service';
