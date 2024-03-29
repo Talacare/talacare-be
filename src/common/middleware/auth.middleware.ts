@@ -23,24 +23,7 @@ export class AuthMiddleware implements NestMiddleware {
       );
     }
 
-    if (authHeader.startsWith('Bearer ')) {
-      const token = authHeader.substring(7, authHeader.length);
-      verify(token, process.env.JWT_SECRET, (err, decoded: any) => {
-        if (err) {
-          return res.status(HttpStatus.UNAUTHORIZED).json(
-            this.responseUtil.response({
-              responseCode: HttpStatus.UNAUTHORIZED,
-              responseStatus: 'FAILED',
-              responseMessage: 'Access token invalid',
-            }),
-          );
-        } else {
-          req.id = decoded.user_id;
-          req.email = decoded.email;
-          next();
-        }
-      });
-    } else {
+    if (!authHeader.startsWith('Bearer ')) {
       return res.status(HttpStatus.UNAUTHORIZED).json(
         this.responseUtil.response({
           responseCode: HttpStatus.UNAUTHORIZED,
@@ -49,5 +32,22 @@ export class AuthMiddleware implements NestMiddleware {
         }),
       );
     }
+
+    const token = authHeader.substring(7, authHeader.length);
+    verify(token, process.env.JWT_SECRET, (err, decoded: any) => {
+      if (err) {
+        return res.status(HttpStatus.UNAUTHORIZED).json(
+          this.responseUtil.response({
+            responseCode: HttpStatus.UNAUTHORIZED,
+            responseStatus: 'FAILED',
+            responseMessage: 'Access token invalid',
+          }),
+        );
+      } else {
+        req.id = decoded.user_id;
+        req.email = decoded.email;
+        next();
+      }
+    });
   }
 }

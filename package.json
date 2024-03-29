@@ -27,11 +27,8 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^5.9.1",
-<<<<<<< HEAD
     "@types/jsonwebtoken": "^9.0.6",
-=======
     "@sentry/node": "^7.108.0",
->>>>>>> 3ed4e21ca0199f54b3d9d44f1e168d3a13180d1f
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "firebase": "^10.9.0",
