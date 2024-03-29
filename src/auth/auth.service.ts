@@ -4,6 +4,7 @@ import {
   Injectable,
   Logger,
   Req,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { auth } from 'firebase-admin';
@@ -24,11 +25,7 @@ export class AuthService {
       })
       .catch((error) => {
         Logger.log(error.message);
-
-        throw new HttpException(
-          'Token invalid or expired',
-          HttpStatus.UNAUTHORIZED,
-        );
+        throw new UnauthorizedException('Token invalid or expired')
       });
 
     return token;
@@ -43,7 +40,7 @@ export class AuthService {
         email: user.email,
       },
       process.env.JWT_SECRET,
-      { expiresIn: '3d' },
+      { expiresIn: process.env.TOKEN_EXPIRED_AT },
     );
 
     return token;

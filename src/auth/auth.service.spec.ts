@@ -60,8 +60,8 @@ describe('AuthService', () => {
           email: 'john@example.com',
         },
         process.env.JWT_SECRET,
-        { expiresIn: '3d' },
-      );
+        { expiresIn: process.env.TOKEN_EXPIRED_AT },
+        );
     });
   });
 
