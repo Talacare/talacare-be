@@ -1,4 +1,8 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import {
+  Injectable,
+  NestMiddleware,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { ResponseUtil } from '../utils/response.util';
 import { HttpStatus } from '@nestjs/common/enums';
@@ -13,36 +17,21 @@ export class AuthMiddleware implements NestMiddleware {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-      return res.status(HttpStatus.UNAUTHORIZED).json(
-        this.responseUtil.response({
-          responseCode: HttpStatus.UNAUTHORIZED,
-          responseStatus: 'FAILED',
-          responseMessage:
-            'Authorization token is missing in the request header',
-        }),
+      throw new UnauthorizedException(
+        'Authorization token is missing in the request header',
       );
     }
 
     if (!authHeader.startsWith('Bearer ')) {
-      return res.status(HttpStatus.UNAUTHORIZED).json(
-        this.responseUtil.response({
-          responseCode: HttpStatus.UNAUTHORIZED,
-          responseStatus: 'FAILED',
-          responseMessage: 'Bearer is missing in the request header',
-        }),
+      throw new UnauthorizedException(
+        'Bearer is missing in the request header',
       );
     }
 
     const token = authHeader.substring(7, authHeader.length);
     verify(token, process.env.JWT_SECRET, (err, decoded: any) => {
       if (err) {
-        return res.status(HttpStatus.UNAUTHORIZED).json(
-          this.responseUtil.response({
-            responseCode: HttpStatus.UNAUTHORIZED,
-            responseStatus: 'FAILED',
-            responseMessage: 'Access token invalid',
-          }),
-        );
+        throw new UnauthorizedException('Access token invalid');
       } else {
         req.id = decoded.user_id;
         req.email = decoded.email;
