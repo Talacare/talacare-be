@@ -9,8 +9,7 @@ on:
     branches:
       - staging
   workflow_run:
-    workflows: ["SonarCloud"]
-    branches: [staging]
+    workflows: [SonarCloud]
     types: 
       - completed
 
