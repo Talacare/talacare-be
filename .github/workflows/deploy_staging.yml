@@ -5,11 +5,9 @@ env:
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 on:
-  push:
-    branches:
-      - staging
   workflow_run:
     workflows: [SonarCloud]
+    branches: [staging]
     types: 
       - completed
 
