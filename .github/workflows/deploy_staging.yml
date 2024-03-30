@@ -8,6 +8,11 @@ on:
   push:
     branches:
       - staging
+  workflow_run:
+    workflows: ["SonarCloud"]
+    branches: [staging]
+    types: 
+      - completed
 
 jobs:
   deploy:
