@@ -3,7 +3,7 @@ import {
   NestMiddleware,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Response, NextFunction } from 'express';
+import { NextFunction } from 'express';
 
 import { verify } from 'jsonwebtoken';
 import { CustomRequest } from '../interfaces/request.interface';
