@@ -3,17 +3,16 @@ import {
   NestMiddleware,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
-import { ResponseUtil } from '../utils/response.util';
-import { HttpStatus } from '@nestjs/common/enums';
+import { Response, NextFunction } from 'express';
+
 import { verify } from 'jsonwebtoken';
 import { CustomRequest } from '../interfaces/request.interface';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  constructor(private readonly responseUtil: ResponseUtil) {}
+  constructor() {}
 
-  use(req: CustomRequest, res: Response, next: NextFunction) {
+  use(req: CustomRequest, next: NextFunction) {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {

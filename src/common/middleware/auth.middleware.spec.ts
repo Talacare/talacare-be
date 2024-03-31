@@ -7,11 +7,9 @@ process.env.JWT_SECRET = 'SECRETCODE';
 
 describe('AuthMiddleware', () => {
   let middleware: AuthMiddleware;
-  let responseUtil: ResponseUtil;
 
   beforeEach(() => {
-    responseUtil = new ResponseUtil();
-    middleware = new AuthMiddleware(responseUtil);
+    middleware = new AuthMiddleware();
   });
 
   it('should call next() if authorization header is present and valid', () => {
@@ -31,7 +29,7 @@ describe('AuthMiddleware', () => {
     };
     const next = jest.fn();
 
-    middleware.use(req, {} as any, next);
+    middleware.use(req, next);
 
     expect(next).toHaveBeenCalled();
     expect(req.id).toEqual('f16b14ee-f594-4b7a-bf1d-afe67a9704a2');
@@ -46,9 +44,7 @@ describe('AuthMiddleware', () => {
     };
     const next = jest.fn();
 
-    expect(() => middleware.use(req, {} as any, next)).toThrowError(
-      UnauthorizedException,
-    );
+    expect(() => middleware.use(req, next)).toThrowError(UnauthorizedException);
   });
 
   it('should throw UnauthorizedException if authorization token is missing in the request header', () => {
@@ -57,9 +53,7 @@ describe('AuthMiddleware', () => {
     };
     const next = jest.fn();
 
-    expect(() => middleware.use(req, {} as any, next)).toThrowError(
-      UnauthorizedException,
-    );
+    expect(() => middleware.use(req, next)).toThrowError(UnauthorizedException);
   });
 
   it('should throw UnauthorizedException if Bearer is missing in the request header', () => {
@@ -70,8 +64,6 @@ describe('AuthMiddleware', () => {
     };
     const next = jest.fn();
 
-    expect(() => middleware.use(req, {} as any, next)).toThrowError(
-      UnauthorizedException,
-    );
+    expect(() => middleware.use(req, next)).toThrowError(UnauthorizedException);
   });
 });
