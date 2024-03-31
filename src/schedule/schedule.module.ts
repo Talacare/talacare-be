@@ -7,7 +7,7 @@ import {
 import { ScheduleController } from './schedule.controller';
 import { ScheduleService } from './schedule.service';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AuthMiddleware } from 'src/common/middleware/authorization';
+import { AuthMiddleware } from 'src/common/middlewares/authorization';
 
 @Module({
   controllers: [ScheduleController],
