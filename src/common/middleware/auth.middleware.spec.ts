@@ -15,7 +15,6 @@ describe('AuthMiddleware', () => {
   });
 
   it('should call next() if authorization header is present and valid', () => {
-    // Mock a token with an expiration time in the past
     const expiredToken = sign(
       {
         id: 'f16b14ee-f594-4b7a-bf1d-afe67a9704a2',
