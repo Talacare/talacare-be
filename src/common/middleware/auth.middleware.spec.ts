@@ -1,6 +1,7 @@
 import { AuthMiddleware } from './auth.middleware';
 import { ResponseUtil } from '../utils/response.util';
 import { UnauthorizedException } from '@nestjs/common';
+import { sign } from 'jsonwebtoken';
 
 process.env.JWT_SECRET = 'SECRETCODE';
 
@@ -13,22 +14,30 @@ describe('AuthMiddleware', () => {
     middleware = new AuthMiddleware(responseUtil);
   });
 
-  // it('should call next() if authorization header is present and valid', () => {
-  //   const req: any = {
-  //     headers: {
-  //       authorization:
-  //         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZjE2YjE0ZWUtZjU5NC00YjdhLWJmMWQtYWZlNjdhOTcwNGEyIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNzExNTIzMDA5LCJleHAiOjE3MTE3ODIyMDl9.RrE1lahlh7ja3MIA5e_AEWrpKP1_yDJKuCmoI1P16AA',
-  //     },
-  //   };
-  //   const next = jest.fn();
+  it('should call next() if authorization header is present and valid', () => {
+    // Mock a token with an expiration time in the past
+    const expiredToken = sign(
+      {
+        id: 'f16b14ee-f594-4b7a-bf1d-afe67a9704a2',
+        email: 'test@test.com',
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' },
+    );
 
-  //   middleware.use(req, {} as any, next);
+    const req: any = {
+      headers: {
+        authorization: `Bearer ${expiredToken}`,
+      },
+    };
+    const next = jest.fn();
 
-  //   expect(next).toHaveBeenCalled();
+    middleware.use(req, {} as any, next);
 
-  //   expect(req.id).toEqual('f16b14ee-f594-4b7a-bf1d-afe67a9704a2');
-  //   expect(req.email).toEqual('test@test.com');
-  // });
+    expect(next).toHaveBeenCalled();
+    expect(req.id).toEqual('f16b14ee-f594-4b7a-bf1d-afe67a9704a2');
+    expect(req.email).toEqual('test@test.com');
+  });
 
   it('should throw UnauthorizedException if authorization header is present and invalid', () => {
     const req: any = {

@@ -33,7 +33,7 @@ export class AuthMiddleware implements NestMiddleware {
       if (err) {
         throw new UnauthorizedException('Access token invalid');
       } else {
-        req.id = decoded.user_id;
+        req.id = decoded.id;
         req.email = decoded.email;
         next();
       }
