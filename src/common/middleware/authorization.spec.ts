@@ -1,4 +1,4 @@
-import { AuthMiddleware } from './auth.middleware';
+import { AuthMiddleware } from './authorization';
 import { ResponseUtil } from '../utils/response.util';
 import { UnauthorizedException } from '@nestjs/common';
 import { sign } from 'jsonwebtoken';
