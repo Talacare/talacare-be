@@ -1,6 +1,16 @@
 {
   "version": 2,
-
+  "builds": [
+    {
+      "src": "src/main.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "src/common/middleware/auth.middleware.ts",
+      "use": "@vercel/node"
+    }
+  
+  ],
   "routes": [
     {
       "src": "/(.*)",
@@ -10,11 +20,6 @@
   ],
   "buildCommand": "yarn vercel-build",
   "devCommand": "yarn start:dev",
-  "installCommand": "yarn",
-  "functions": {
-    "src/common/middleware/auth.middleware.ts": {
-      "runtime": "node@18.x"
-    }
-  }
+  "installCommand": "yarn"
 
 }
