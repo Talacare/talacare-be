@@ -50,8 +50,13 @@ export class ScheduleService {
 
   async getSchedulesByUserId(userId: string): Promise<GetSchedule[]> {
     const schedules = await this.prisma.schedule.findMany({
-      where: { userId: userId, },
-      select: { hour: true, minute: true, },
+      where: {
+        userId: userId,
+      },
+      select: {
+        hour: true,
+        minute: true,
+      },
       orderBy: [{ hour: 'asc' }, { minute: 'asc' }],
     });
 
