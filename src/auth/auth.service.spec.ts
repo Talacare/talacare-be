@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthService } from './auth.service';
 import { CustomRequest } from 'src/common/interfaces/request.interface';
-import { auth } from 'firebase-admin';
 import { sign } from 'jsonwebtoken';
 import { mockDeep } from 'jest-mock-extended';
 import { Logger, UnauthorizedException } from '@nestjs/common';
