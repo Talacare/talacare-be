@@ -17,6 +17,9 @@ export class ScheduleModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes({ path: 'schedule', method: RequestMethod.GET });
+      .forRoutes(
+        { path: 'schedule', method: RequestMethod.GET },
+        { path: 'schedule/all', method: RequestMethod.GET },
+      );
   }
 }
