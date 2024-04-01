@@ -3,15 +3,14 @@ import {
   NestMiddleware,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
-import { ResponseUtil } from '../utils/response.util';
-import { HttpStatus } from '@nestjs/common/enums';
+import { NextFunction } from 'express';
+
 import { verify } from 'jsonwebtoken';
 import { CustomRequest } from '../interfaces/request.interface';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  constructor(private readonly responseUtil: ResponseUtil) {}
+  constructor() {}
 
   use(req: CustomRequest, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
@@ -33,7 +32,7 @@ export class AuthMiddleware implements NestMiddleware {
       if (err) {
         throw new UnauthorizedException('Access token invalid');
       } else {
-        req.id = decoded.user_id;
+        req.id = decoded.id;
         req.email = decoded.email;
         next();
       }
