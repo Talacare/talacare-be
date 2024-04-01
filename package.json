@@ -5,6 +5,7 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -88,5 +89,6 @@
     "reportFile": "test-report.xml",
     "sonar56x": true,
     "indent": 4
-  }
+  },
+  "middleware":"./src/common/middleware/auth.middleware.ts"
 }
