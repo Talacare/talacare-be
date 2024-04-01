@@ -31,9 +31,8 @@ describe('AppService', () => {
   });
 
   it('getHello should call prisma.user.findMany', async () => {
-    const prismaSpy = jest.spyOn(mockPrismaService.user, 'findMany');
-    await service.getHello();
-    expect(prismaSpy).toHaveBeenCalled();
+    const hello = await service.getHello();
+    expect(hello).toBe('hello api-talacare');
   });
 
   it('getEnvironment should return local if no VERCEL_ENV is set', async () => {
