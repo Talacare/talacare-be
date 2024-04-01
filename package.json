@@ -89,6 +89,5 @@
     "reportFile": "test-report.xml",
     "sonar56x": true,
     "indent": 4
-  },
-  "middleware":"./src/common/middleware/auth.middleware.ts"
+  }
 }
