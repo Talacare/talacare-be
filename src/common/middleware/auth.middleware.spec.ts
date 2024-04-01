@@ -14,8 +14,8 @@ describe('AuthMiddleware', () => {
   it('should call next() if authorization header is present and valid', () => {
     const mockToken = sign(
       {
-        id: 'f16b14ee-f594-4b7a-bf1d-afe67a9704aa',
-        email: 'testing.tiket23@gmail.com',
+        id: 'f16b14ee-f594-4b7a-bf1d-afe67a9704a',
+        email: 'test@test.com',
       },
       process.env.JWT_SECRET,
       { expiresIn: '1d' },
