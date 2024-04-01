@@ -7,7 +7,6 @@ import { Schedule } from '@prisma/client';
 import { ResponseUtil } from '../common/utils/response.util';
 import { BadRequestException } from '@nestjs/common';
 import { GetSchedule } from './interfaces/get-schedule-interface';
-import { CustomRequest } from 'src/common/interfaces/request.interface';
 
 const mockScheduleServiceInstance = {
   create: jest.fn((dto) => {

@@ -6,7 +6,6 @@ import { Schedule } from '@prisma/client';
 import { GetScheduleQueryDTO } from './dto/get-schedule.dto';
 import { ResponseUtil } from '../common/utils/response.util';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { create } from 'domain';
 
 const mockPrisma = {
   schedule: {

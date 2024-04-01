@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import {
-  HttpException,
   HttpStatus,
   BadRequestException,
   Logger,
@@ -8,10 +7,6 @@ import {
 import { HttpExceptionFilter } from './http-exception.filter';
 import {
   PrismaClientKnownRequestError,
-  PrismaClientUnknownRequestError,
-  PrismaClientRustPanicError,
-  PrismaClientInitializationError,
-  PrismaClientValidationError,
 } from '@prisma/client/runtime/library';
 import { mockDeep } from 'jest-mock-extended';
 
