@@ -25,7 +25,7 @@ export class AuthService {
       })
       .catch((error) => {
         Logger.log(error.message);
-        throw new UnauthorizedException('Token invalid or expired')
+        throw new UnauthorizedException('Token invalid or expired');
       });
 
     return token;

@@ -12,7 +12,7 @@ import { CustomRequest } from '../interfaces/request.interface';
 export class AuthMiddleware implements NestMiddleware {
   constructor() {}
 
-  use(req: CustomRequest, next: NextFunction) {
+  use(req: CustomRequest, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {

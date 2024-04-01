@@ -1,5 +1,4 @@
 import { AuthMiddleware } from './auth.middleware';
-import { ResponseUtil } from '../utils/response.util';
 import { UnauthorizedException } from '@nestjs/common';
 import { sign } from 'jsonwebtoken';
 
@@ -13,10 +12,10 @@ describe('AuthMiddleware', () => {
   });
 
   it('should call next() if authorization header is present and valid', () => {
-    const expiredToken = sign(
+    const mockToken = sign(
       {
-        id: 'f16b14ee-f594-4b7a-bf1d-afe67a9704a2',
-        email: 'test@test.com',
+        id: 'f16b14ee-f594-4b7a-bf1d-afe67a9704aa',
+        email: 'testing.tiket23@gmail.com',
       },
       process.env.JWT_SECRET,
       { expiresIn: '1d' },
@@ -24,12 +23,12 @@ describe('AuthMiddleware', () => {
 
     const req: any = {
       headers: {
-        authorization: `Bearer ${expiredToken}`,
+        authorization: `Bearer ${mockToken}`,
       },
     };
     const next = jest.fn();
 
-    middleware.use(req, next);
+    middleware.use(req, {} as any, next);
 
     expect(next).toHaveBeenCalled();
     expect(req.id).toEqual('f16b14ee-f594-4b7a-bf1d-afe67a9704a2');
@@ -44,7 +43,9 @@ describe('AuthMiddleware', () => {
     };
     const next = jest.fn();
 
-    expect(() => middleware.use(req, next)).toThrowError(UnauthorizedException);
+    expect(() => middleware.use(req, {} as any, next)).toThrowError(
+      UnauthorizedException,
+    );
   });
 
   it('should throw UnauthorizedException if authorization token is missing in the request header', () => {
@@ -53,7 +54,9 @@ describe('AuthMiddleware', () => {
     };
     const next = jest.fn();
 
-    expect(() => middleware.use(req, next)).toThrowError(UnauthorizedException);
+    expect(() => middleware.use(req, {} as any, next)).toThrowError(
+      UnauthorizedException,
+    );
   });
 
   it('should throw UnauthorizedException if Bearer is missing in the request header', () => {
@@ -64,6 +67,8 @@ describe('AuthMiddleware', () => {
     };
     const next = jest.fn();
 
-    expect(() => middleware.use(req, next)).toThrowError(UnauthorizedException);
+    expect(() => middleware.use(req, {} as any, next)).toThrowError(
+      UnauthorizedException,
+    );
   });
 });
