@@ -15,8 +15,11 @@
   ],
   "buildCommand": "yarn vercel-build",
   "devCommand": "yarn start:dev",
-  "installCommand": "yarn"
+  "installCommand": "yarn",
+  "functions": {
+    "src/common/middleware/auth.middleware.ts": {
+      "runtime": "node@18.x"
+    }
+  }
 
-
-  
 }
