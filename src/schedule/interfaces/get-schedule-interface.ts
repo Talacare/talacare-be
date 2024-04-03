@@ -1,5 +1,5 @@
 export interface GetSchedule {
-    userId: string;
+    id: string;
     hour: number;
     minute: number;
 }  
