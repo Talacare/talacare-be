@@ -177,8 +177,8 @@ describe('ScheduleService', () => {
         },
       ];
       const expectedSchedules = [
-        { hour: 8, minute: 0 },
-        { hour: 12, minute: 30 },
+        { id: 'a1499bda-e94d-4c97-8dee-ac1b2708a76f', hour: 8, minute: 0 },
+        { id: '3d11406f-b677-42d3-a597-c975402ff2d2', hour: 12, minute: 30 },
       ];
 
       jest
@@ -194,6 +194,7 @@ describe('ScheduleService', () => {
           userId: userId,
         },
         select: {
+          id: true,
           hour: true,
           minute: true,
         },
@@ -215,6 +216,7 @@ describe('ScheduleService', () => {
           userId: userId,
         },
         select: {
+          id: true,
           hour: true,
           minute: true,
         },

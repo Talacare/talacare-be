@@ -54,6 +54,7 @@ export class ScheduleService {
         userId: userId,
       },
       select: {
+        id: true,
         hour: true,
         minute: true,
       },
@@ -61,6 +62,7 @@ export class ScheduleService {
     });
 
     return schedules.map((schedule) => ({
+      id: schedule.id,
       hour: schedule.hour,
       minute: schedule.minute,
     }));
