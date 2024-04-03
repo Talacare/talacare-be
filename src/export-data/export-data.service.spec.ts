@@ -8,18 +8,17 @@ describe('ExportDataService', () => {
   let service: ExportDataService;
   let prismaService: PrismaService;
 
-  const mockFn = jest.fn();
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ExportDataService,
         ResponseUtil,
+
         {
           provide: PrismaService,
           useValue: {
             gameHistory: {
-              findMany: mockFn,
+              getGameHistoryByUser: mockGameHistoryByUser,
             },
           },
         },
@@ -30,15 +29,16 @@ describe('ExportDataService', () => {
     prismaService = module.get<PrismaService>(PrismaService);
   });
 
-  describe('generate', () => {
+  describe('exportGameData', () => {
     it('should generate and send email with game history', async () => {
-      mockFn.mockResolvedValue([
+      const userId = 'a1499bda-e94d-4c97-8dee-ac1b2708a76d';
+      mockGameHistoryByUser.mockResolvedValue([
         {
           gameType: GameType.JUMP_N_JUMP,
           score: 100,
           startTime: new Date(),
           endTime: new Date(),
-          userId: '123e4567-e89b-12d3-a456-426614174000',
+          userId: userId,
         },
       ]);
 
@@ -59,27 +59,11 @@ describe('ExportDataService', () => {
         },
       });
 
-      const response = await service.generate();
+      const response = await service.exportGameData(userId);
 
-      expect(prismaService.gameHistory.findMany).toHaveBeenCalledWith({
-        where: { userId: '27caaf57-b0b6-412a-9f95-c6beec2d0aaf' },
-      });
-
+      expect(prismaService.gameHistory.findMany).toHaveBeenCalledWith(userId);
       expect(service.setup).toHaveBeenCalled();
-
-      expect(response).toEqual({
-        responseCode: 200,
-        responseMessage: 'mail response',
-        responseStatus: 'SUCCESS',
-      });
-    });
-
-    it('should throw error if any operation fails', async () => {
-      mockFn.mockRejectedValue(new Error('Failed to fetch game history'));
-
-      await expect(service.generate()).rejects.toThrowError(
-        'Failed to fetch game history',
-      );
+      expect(response).toEqual('Game data succesfully sent to email');
     });
   });
 

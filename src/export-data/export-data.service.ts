@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Workbook, Worksheet } from 'exceljs';
 import { createTransport } from 'nodemailer';
 import { ResponseUtil } from '../common/utils/response.util';
+import { GameHistoryService } from 'src/game-history/game-history.service';
 
 @Injectable()
 export class ExportDataService {
@@ -11,11 +12,10 @@ export class ExportDataService {
     private readonly responseUtil: ResponseUtil,
   ) {}
 
-  public async generate(): Promise<string> {
-    //temporary userId just, will be changed later
+  public async exportGameData(userId: string): Promise<string> {
     const histories = await this.prisma.gameHistory.findMany({
       where: {
-        userId: '27caaf57-b0b6-412a-9f95-c6beec2d0aaf',
+        userId: userId,
       },
     });
 
@@ -61,19 +61,11 @@ export class ExportDataService {
         ],
       };
 
-      const info = await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
 
-      return this.responseUtil.response({
-        responseCode: 200,
-        responseMessage: info.response,
-        responseStatus: 'SUCCESS',
-      });
+      return 'Exported data succesfully sent to email';
     } catch (error) {
-      return this.responseUtil.response({
-        responseCode: 400,
-        responseMessage: error.message,
-        responseStatus: 'FAILED',
-      });
+      return 'Export data failed';
     }
   }
 
