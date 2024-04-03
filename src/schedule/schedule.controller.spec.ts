@@ -158,12 +158,12 @@ describe('ScheduleController', () => {
       const request: any = { id: 'f16b14ee-f594-4b7a-bf1d-afe67a9704aa' };
       const expectedSchedules: GetSchedule[] = [
         {
-          userId: request.id,
+          id: '7b9a9bb7-09b5-40c5-9537-71a08a1d3e92',
           hour: 10,
           minute: 50,
         },
         {
-          userId: request.id,
+          id: 'cdfd2836-c355-4174-9302-d57e958f1ab4',
           hour: 12,
           minute: 35,
         },
