@@ -34,7 +34,7 @@ jest.mock('@sentry/node', () => mockSentry);
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-const bootstrap = require('./main')
+import { bootstrap } from './main';
 
 describe('bootstrap function', () => {
   it('should create a NestJS application using the AppModule', async () => {
