@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { Prisma } from '@prisma/client';
+import { Request } from '@sentry/node';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
