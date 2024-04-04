@@ -8,17 +8,18 @@ describe('ExportDataService', () => {
   let service: ExportDataService;
   let prismaService: PrismaService;
 
+  const mockFn = jest.fn();
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ExportDataService,
         ResponseUtil,
-
         {
           provide: PrismaService,
           useValue: {
             gameHistory: {
-              getGameHistoryByUser: mockGameHistoryByUser,
+              findMany: mockFn,
             },
           },
         },
@@ -29,10 +30,11 @@ describe('ExportDataService', () => {
     prismaService = module.get<PrismaService>(PrismaService);
   });
 
-  describe('exportGameData', () => {
+  describe('generate', () => {
     it('should generate and send email with game history', async () => {
-      const userId = 'a1499bda-e94d-4c97-8dee-ac1b2708a76d';
-      mockGameHistoryByUser.mockResolvedValue([
+      const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const email = 'test@test.com';
+      mockFn.mockResolvedValue([
         {
           gameType: GameType.JUMP_N_JUMP,
           score: 100,
@@ -59,11 +61,54 @@ describe('ExportDataService', () => {
         },
       });
 
-      const response = await service.exportGameData(userId);
+      const response = await service.exportGameData(userId, email);
 
-      expect(prismaService.gameHistory.findMany).toHaveBeenCalledWith(userId);
+      expect(prismaService.gameHistory.findMany).toHaveBeenCalledWith({
+        where: { userId: userId },
+      });
+
       expect(service.setup).toHaveBeenCalled();
-      expect(response).toEqual('Game data succesfully sent to email');
+
+      expect(response).toEqual('Exported data succesfully sent to email');
+    });
+
+    it('should handle error scenario when exporting data fails', async () => {
+      const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const email = 'test@test.com';
+
+      mockFn.mockResolvedValue([
+        {
+          gameType: GameType.JUMP_N_JUMP,
+          score: 100,
+          startTime: new Date(),
+          endTime: new Date(),
+          userId: userId,
+        },
+      ]);
+
+      service.setup = jest.fn().mockReturnValue({
+        workbook: {
+          xlsx: {
+            writeBuffer: jest
+              .fn()
+              .mockResolvedValue(Buffer.from('buffer content')),
+          },
+        },
+        worksheet: {
+          addRow: jest.fn(),
+          columns: [],
+        },
+        transporter: {
+          sendMail: jest
+            .fn()
+            .mockRejectedValue(new Error('Sending email failed')),
+        },
+      });
+
+      const response = await service.exportGameData(userId, email);
+
+      // Assert that response indicates failure
+      expect(response).toEqual('Export data failed');
     });
   });
 
