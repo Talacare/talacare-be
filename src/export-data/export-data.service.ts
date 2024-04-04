@@ -46,7 +46,7 @@ export class ExportDataService {
         .replace(/\//g, '-');
 
       const mailOptions = {
-        from: 'elbertmarcellinus@gmail.com',
+        from: process.env.EMAIL_SENDER,
         to: emailTo,
         subject: 'Game History Talacare',
         text: 'Please find the empty Excel file attached.',
@@ -77,7 +77,7 @@ export class ExportDataService {
     const transporter = createTransport({
       service: 'Gmail',
       auth: {
-        user: 'elbertmarcellinus@gmail.com',
+        user: process.env.EMAIL_SENDER,
         pass: process.env.EMAIL_PASSWORD,
       },
     });
