@@ -49,7 +49,7 @@ export class ExportDataService {
         from: process.env.EMAIL_SENDER,
         to: emailTo,
         subject: 'Game History Talacare',
-        text: 'Please find the empty Excel file attached.',
+        text: 'Please find the exported game data attached',
         attachments: [
           {
             filename: `game_history_${formattedDate}.xlsx`,
