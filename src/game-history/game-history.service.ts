@@ -12,8 +12,4 @@ export class GameHistoryService {
       data: gameHistoryData,
     });
   }
-
-  // public async getGameHistoryByUser(userId: string) {
-
-  // }
 }
