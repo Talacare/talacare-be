@@ -2,17 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Workbook, Worksheet } from 'exceljs';
 import { createTransport } from 'nodemailer';
-import { ResponseUtil } from '../common/utils/response.util';
-import { GameHistoryService } from 'src/game-history/game-history.service';
 
 @Injectable()
 export class ExportDataService {
-  constructor(
-    private prisma: PrismaService,
-    private readonly responseUtil: ResponseUtil,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
-  public async exportGameData(userId: string): Promise<string> {
+  public async exportGameData(
+    userId: string,
+    emailTo: string,
+  ): Promise<string> {
     const histories = await this.prisma.gameHistory.findMany({
       where: {
         userId: userId,
@@ -47,10 +45,9 @@ export class ExportDataService {
         })
         .replace(/\//g, '-');
 
-      // temporary mail
       const mailOptions = {
         from: 'elbertmarcellinus@gmail.com',
-        to: 'marcellinuselbert46@gmail.com',
+        to: emailTo,
         subject: 'Game History Talacare',
         text: 'Please find the empty Excel file attached.',
         attachments: [

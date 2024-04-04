@@ -14,7 +14,10 @@ export class ExportDataController {
   @HttpCode(HttpStatus.OK)
   async export(@Req() request: CustomRequest): Promise<string> {
     return this.responseUtil.response({
-      responseMessage: await this.exportDataService.exportGameData(request.id),
+      responseMessage: await this.exportDataService.exportGameData(
+        request.id,
+        request.email,
+      ),
     });
   }
 }
