@@ -33,7 +33,7 @@ jest.mock('@sentry/node', () => mockSentry);
 
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import bootstrap from './main';
+import { bootstrap } from './main';
 
 
 describe('bootstrap function', () => {
