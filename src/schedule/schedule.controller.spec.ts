@@ -6,6 +6,7 @@ import { GetScheduleQueryDTO } from './dto/get-schedule.dto';
 import { Schedule } from '@prisma/client';
 import { ResponseUtil } from '../common/utils/response.util';
 import { BadRequestException } from '@nestjs/common';
+import { GetSchedule } from './interfaces/get-schedule-interface';
 
 const mockScheduleServiceInstance = {
   create: jest.fn((dto) => {
@@ -13,6 +14,7 @@ const mockScheduleServiceInstance = {
   }),
   delete: jest.fn(),
   getAll: jest.fn(),
+  getSchedulesByUserId: jest.fn(),
 };
 
 describe('ScheduleController', () => {
@@ -146,6 +148,35 @@ describe('ScheduleController', () => {
       );
       expect(mockScheduleServiceInstance.getAll).toHaveBeenLastCalledWith(
         query,
+      );
+    });
+  });
+
+  describe('getAll', () => {
+
+    it('should get schedules for a user', async () => {
+      const request: any = { id: 'f16b14ee-f594-4b7a-bf1d-afe67a9704aa' };
+      const expectedSchedules: GetSchedule[] = [
+        {
+          id: '7b9a9bb7-09b5-40c5-9537-71a08a1d3e92',
+          hour: 10,
+          minute: 50,
+        },
+        {
+          id: 'cdfd2836-c355-4174-9302-d57e958f1ab4',
+          hour: 12,
+          minute: 35,
+        },
+      ];
+      mockScheduleServiceInstance.getSchedulesByUserId.mockResolvedValue(expectedSchedules);
+
+      const schedules = await controller.get(request);
+
+      expect(schedules).toEqual(
+        responseUtil.response({}, { data: expectedSchedules }),
+      );
+      expect(mockScheduleServiceInstance.getSchedulesByUserId).toHaveBeenLastCalledWith(
+        request.id,
       );
     });
   });

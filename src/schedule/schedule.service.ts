@@ -8,6 +8,7 @@ import { CreateScheduleInput } from './interfaces/create-schedule-input.interfac
 import { CreateSchedule } from './interfaces/create-schedule.interface';
 import { GetScheduleQueryDTO } from './dto/get-schedule.dto';
 import { Schedule } from '@prisma/client';
+import { GetSchedule } from './interfaces/get-schedule-interface';
 
 @Injectable()
 export class ScheduleService {
@@ -41,5 +42,25 @@ export class ScheduleService {
     }
 
     await this.prisma.schedule.delete({ where: { id } });
+  }
+
+  async getSchedulesByUserId(userId: string): Promise<GetSchedule[]> {
+    const schedules = await this.prisma.schedule.findMany({
+      where: {
+        userId: userId,
+      },
+      select: {
+        id: true,
+        hour: true,
+        minute: true,
+      },
+      orderBy: [{ hour: 'asc' }, { minute: 'asc' }],
+    });
+
+    return schedules.map((schedule) => ({
+      id: schedule.id,
+      hour: schedule.hour,
+      minute: schedule.minute,
+    }));
   }
 }
