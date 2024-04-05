@@ -1,7 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { GameHistoryService } from './game-history.service';
 import { CreateGameHistoryDto } from './dto/create-game-history-dto';
-import { GameHistory } from '@prisma/client';
 import { ResponseUtil } from '../common/utils/response.util';
 
 @Controller('game-history')

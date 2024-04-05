@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { Prisma } from '@prisma/client';
+import { Request } from '@sentry/node';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -40,7 +41,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     if (handlePrismaQueryError) {
       responseMessage = 'Invalid query';
     } else if (exception.response?.statusCode === 400) {
-      responseMessage = exception.response?.message;
+      responseMessage = exception.response.message;
     } else {
       responseMessage = exception.message;
     }
@@ -48,7 +49,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const exceptionMessage =
       exception.response?.statusCode === 400
         ? `
-            Validation Error: ${exception.response?.message}
+            Validation Error: ${exception.response.message}
       
             Stack Trace: ${exception.stack}
             `
