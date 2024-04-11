@@ -11,6 +11,7 @@ const mockPrisma = {
   schedule: {
     create: jest.fn(),
     findMany: jest.fn(),
+    findFirst: jest.fn(),
     findUnique: jest.fn(),
     delete: jest.fn(),
   },
@@ -52,20 +53,60 @@ describe('ScheduleService', () => {
   describe('create', () => {
     it('should create a schedule', async () => {
       const scheduleData: CreateScheduleInput = {
-        userId: '81c41b32-7a45-4b64-a98e-928f16fc26d7',
         hour: 10,
         minute: 30,
       };
 
-      const expected = { ...scheduleData, id: expect.any(String) };
+      const userId = '1937f86d-fce7-4ee6-88af-14df7bddce4a';
+
+      jest.spyOn(mockPrisma.schedule, 'findFirst').mockResolvedValueOnce(null);
+
+      const expected = {
+        ...scheduleData,
+        userId: userId,
+        id: expect.any(String),
+      };
+
       jest.spyOn(mockPrisma.schedule, 'create').mockResolvedValue(expected);
-      const createdSchedule = await service.create(scheduleData);
+      const createdSchedule = await service.create(userId, scheduleData);
 
       expect(createdSchedule).toEqual(expected);
       expect(mockPrisma.schedule.create).toHaveBeenCalledTimes(1);
       expect(mockPrisma.schedule.create).toHaveBeenCalledWith({
-        data: scheduleData,
+        data: {
+          ...scheduleData,
+          userId: userId,
+        },
       });
+    });
+
+    it('should throw an error if an existing schedule with the same time is found', async () => {
+      const scheduleData: CreateScheduleInput = {
+        hour: 10,
+        minute: 30,
+      };
+
+      const userId = '1937f86d-fce7-4ee6-88af-14df7bddce4a';
+
+      jest.spyOn(mockPrisma.schedule, 'findFirst').mockResolvedValueOnce({
+        id: 'existing-schedule-id',
+        ...scheduleData,
+        userId: userId,
+      });
+
+      await expect(service.create(userId, scheduleData)).rejects.toThrow(
+        BadRequestException,
+      );
+
+      expect(mockPrisma.schedule.findFirst).toHaveBeenCalledWith({
+        where: {
+          userId: userId,
+          hour: scheduleData.hour,
+          minute: scheduleData.minute,
+        },
+      });
+
+      expect(mockPrisma.schedule.create).not.toHaveBeenCalled();
     });
   });
 
