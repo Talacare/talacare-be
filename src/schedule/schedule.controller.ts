@@ -28,9 +28,31 @@ export class ScheduleController {
   @Post('')
   @HttpCode(HttpStatus.CREATED)
   async create(
+    @Req() request: CustomRequest,
     @Body() createScheduleDto: CreateScheduleDto,
-  ): Promise<Schedule> {
-    return this.scheduleService.create(createScheduleDto);
+  ): Promise<any> {
+    try {
+      const result = await this.scheduleService.create(
+        request.id,
+        createScheduleDto,
+      );
+      return this.responseUtil.response(
+        {
+          responseMessage: 'Jadwal berhasil dibuat',
+          responseCode: HttpStatus.CREATED,
+        },
+        { data: result },
+      );
+    } catch (error) {
+      return this.responseUtil.response(
+        {
+          responseMessage: 'Jadwal gagal dibuat',
+          responseCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          responseStatus: 'FAILED',
+        },
+        { error: error.message },
+      );
+    }
   }
 
   @Delete(':id')
@@ -52,7 +74,9 @@ export class ScheduleController {
   @Get('')
   @HttpCode(HttpStatus.OK)
   async get(@Req() request: CustomRequest): Promise<GetSchedule[]> {
-    const schedules = await this.scheduleService.getSchedulesByUserId(request.id);
+    const schedules = await this.scheduleService.getSchedulesByUserId(
+      request.id,
+    );
     return this.responseUtil.response({}, { data: schedules });
   }
 }
