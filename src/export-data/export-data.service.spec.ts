@@ -65,6 +65,9 @@ describe('ExportDataService', () => {
 
       expect(prismaService.gameHistory.findMany).toHaveBeenCalledWith({
         where: { userId: userId },
+        orderBy: {
+          gameType: 'asc',
+        },
       });
 
       expect(service.setup).toHaveBeenCalled();

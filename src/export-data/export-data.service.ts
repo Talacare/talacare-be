@@ -15,6 +15,9 @@ export class ExportDataService {
       where: {
         userId: userId,
       },
+      orderBy: {
+        gameType: 'asc',
+      },
     });
 
     try {
