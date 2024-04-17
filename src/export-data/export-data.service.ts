@@ -76,6 +76,7 @@ export class ExportDataService {
 
     const transporter = createTransport({
       service: 'Gmail',
+      secure: true,
       auth: {
         user: process.env.EMAIL_SENDER,
         pass: process.env.EMAIL_PASSWORD,
