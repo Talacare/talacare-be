@@ -1,4 +1,4 @@
-import { IsInt, IsUUID, Max, Min } from 'class-validator';
+import { IsInt, Max, Min } from 'class-validator';
 
 export class CreateScheduleDto {
   @IsInt()
@@ -10,7 +10,4 @@ export class CreateScheduleDto {
   @Min(0)
   @Max(59)
   minute: number;
-
-  @IsUUID()
-  userId: string;
 }
