@@ -11,10 +11,14 @@ export class ExportDataService {
     userId: string,
     emailTo: string,
   ): Promise<string> {
-    const histories = await this.prisma.gameHistory.findMany({
+    const user = await this.prisma.user.findUniqueOrThrow({
       where: {
-        userId: userId,
+        role: 'ADMIN',
+        id: userId,
       },
+    });
+
+    const histories = await this.prisma.gameHistory.findMany({
       orderBy: {
         gameType: 'asc',
       },
@@ -63,7 +67,7 @@ export class ExportDataService {
 
       await transporter.sendMail(mailOptions);
 
-      return 'Exported data succesfully sent to email';
+      return 'Exported data successfully sent to email';
     } catch (error) {
       return 'Export data failed';
     }
