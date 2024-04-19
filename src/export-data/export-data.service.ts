@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Workbook, Worksheet } from 'exceljs';
 import { createTransport } from 'nodemailer';
@@ -11,12 +11,18 @@ export class ExportDataService {
     userId: string,
     emailTo: string,
   ): Promise<string> {
-    const user = await this.prisma.user.findUniqueOrThrow({
-      where: {
-        role: 'ADMIN',
-        id: userId,
-      },
-    });
+    const user = await this.prisma.user
+      .findUniqueOrThrow({
+        where: {
+          role: 'ADMIN',
+          id: userId,
+        },
+      })
+      .catch(() => {
+        throw new ForbiddenException(
+          'Only user with role admin can export the game data',
+        );
+      });
 
     const histories = await this.prisma.gameHistory.findMany({
       orderBy: {

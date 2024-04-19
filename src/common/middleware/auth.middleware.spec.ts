@@ -16,6 +16,7 @@ describe('AuthMiddleware', () => {
       {
         id: 'f16b14ee-f594-4b7a-bf1d-afe67a9704a2',
         email: 'test@test.com',
+        role: 'USER',
       },
       process.env.JWT_SECRET,
       { expiresIn: '1d' },

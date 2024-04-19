@@ -3,13 +3,14 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameType } from '@prisma/client';
 import { ResponseUtil } from '../common/utils/response.util';
+import { ForbiddenException } from '@nestjs/common';
 
 describe('ExportDataService', () => {
   let service: ExportDataService;
   let prismaService: PrismaService;
 
   const mockFn = jest.fn();
-  const mockFn2 = jest.fn();
+  const mockFindUniqueOrThrow = jest.fn();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,7 +24,7 @@ describe('ExportDataService', () => {
               findMany: mockFn,
             },
             user: {
-              findUniqueOrThrow: mockFn2,
+              findUniqueOrThrow: mockFindUniqueOrThrow,
             },
           },
         },
@@ -35,11 +36,22 @@ describe('ExportDataService', () => {
   });
 
   describe('generate', () => {
+    it('should throw ForbiddenException when user is not admin', async () => {
+      const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const email = 'test@test.com';
+
+      mockFindUniqueOrThrow.mockRejectedValue(new ForbiddenException());
+
+      await expect(service.exportGameData(userId, email)).rejects.toThrowError(
+        ForbiddenException,
+      );
+    });
+
     it('should generate and send email with game history for admin user', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
       const email = 'test@test.com';
 
-      mockFn2.mockResolvedValue({
+      mockFindUniqueOrThrow.mockResolvedValue({
         id: userId,
         role: 'ADMIN',
         email: 'test@test.com',
@@ -92,7 +104,43 @@ describe('ExportDataService', () => {
       expect(response).toEqual('Exported data successfully sent to email');
     });
 
-    // Add more test cases for non-admin users or when user not found
+    it('should handle error scenario when exporting data fails', async () => {
+      const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const email = 'test@test.com';
+
+      mockFn.mockResolvedValue([
+        {
+          gameType: GameType.JUMP_N_JUMP,
+          score: 100,
+          startTime: new Date(),
+          endTime: new Date(),
+          userId: userId,
+        },
+      ]);
+
+      service.setup = jest.fn().mockReturnValue({
+        workbook: {
+          xlsx: {
+            writeBuffer: jest
+              .fn()
+              .mockResolvedValue(Buffer.from('buffer content')),
+          },
+        },
+        worksheet: {
+          addRow: jest.fn(),
+          columns: [],
+        },
+        transporter: {
+          sendMail: jest
+            .fn()
+            .mockRejectedValue(new Error('Sending email failed')),
+        },
+      });
+
+      const response = await service.exportGameData(userId, email);
+
+      expect(response).toEqual('Export data failed');
+    });
   });
 
   describe('setup', () => {
