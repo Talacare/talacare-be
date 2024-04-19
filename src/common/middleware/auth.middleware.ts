@@ -12,7 +12,7 @@ import { CustomRequest } from '../interfaces/request.interface';
 export class AuthMiddleware implements NestMiddleware {
   constructor() {}
 
-  use(req: CustomRequest, res: Response, next: NextFunction) {
+  use(req: CustomRequest, _: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -34,6 +34,7 @@ export class AuthMiddleware implements NestMiddleware {
       } else {
         req.id = decoded.id;
         req.email = decoded.email;
+        req.token = decoded.token;
         next();
       }
     });

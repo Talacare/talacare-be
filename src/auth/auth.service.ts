@@ -31,6 +31,7 @@ export class AuthService {
       {
         user_id: user.id,
         email: user.email,
+        role: user.role,
       },
       process.env.JWT_SECRET,
       { expiresIn: process.env.TOKEN_EXPIRED_AT },
