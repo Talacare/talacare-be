@@ -33,7 +33,7 @@ export class ScheduleController {
   ): Promise<any> {
     try {
       const result = await this.scheduleService.create(
-        request.id,
+        request.id.toString(),
         createScheduleDto,
       );
       return this.responseUtil.response(
@@ -75,7 +75,7 @@ export class ScheduleController {
   @HttpCode(HttpStatus.OK)
   async get(@Req() request: CustomRequest): Promise<GetSchedule[]> {
     const schedules = await this.scheduleService.getSchedulesByUserId(
-      request.id,
+      request.id.toString(),
     );
     return this.responseUtil.response({}, { data: schedules });
   }
