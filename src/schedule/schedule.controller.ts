@@ -31,28 +31,10 @@ export class ScheduleController {
     @Req() request: CustomRequest,
     @Body() createScheduleDto: CreateScheduleDto,
   ): Promise<any> {
-    try {
-      const result = await this.scheduleService.create(
-        request.id.toString(),
-        createScheduleDto,
-      );
-      return this.responseUtil.response(
-        {
-          responseMessage: 'Jadwal berhasil dibuat',
-          responseCode: HttpStatus.CREATED,
-        },
-        { data: result },
-      );
-    } catch (error) {
-      return this.responseUtil.response(
-        {
-          responseMessage: 'Jadwal gagal dibuat',
-          responseCode: HttpStatus.INTERNAL_SERVER_ERROR,
-          responseStatus: 'FAILED',
-        },
-        { error: error.message },
-      );
-    }
+    return this.scheduleService.create(
+      request.id.toString(),
+      createScheduleDto,
+    );
   }
 
   @Delete(':id')

@@ -56,42 +56,16 @@ describe('ScheduleController', () => {
 
       const expectedResult = {
         id: expect.any(String),
-        ...scheduleDto,
+        hour: 10,
+        minute: 30,
         userId: userId,
       };
 
-      const result = await controller.create(request, scheduleDto);
-      expect(result.responseCode).toEqual(HttpStatus.CREATED);
-      expect(result.responseStatus).toEqual('SUCCESS');
-      expect(result.responseMessage).toEqual('Jadwal berhasil dibuat');
-      expect(result.data).toEqual(expectedResult);
-
-      expect(mockScheduleServiceInstance.create).toHaveBeenCalledWith(
-        userId,
-        scheduleDto,
-      );
-    });
-
-    it('should handle errors when creating a new schedule', async () => {
-      const userId = '1937f86d-fce7-4ee6-88af-14df7bddce4a';
-      const scheduleDto: CreateScheduleDto = {
-        hour: 10,
-        minute: 30,
-      };
-      const request = { id: userId } as CustomRequest;
-      const errorMessage = 'Jadwal gagal dibuat';
-
-      mockScheduleServiceInstance.create.mockRejectedValueOnce(
-        new Error(errorMessage),
-      );
+      mockScheduleServiceInstance.create.mockResolvedValue(expectedResult);
 
       const result = await controller.create(request, scheduleDto);
 
-      expect(result.responseCode).toEqual(HttpStatus.INTERNAL_SERVER_ERROR);
-      expect(result.responseStatus).toEqual('FAILED');
-      expect(result.responseMessage).toEqual('Jadwal gagal dibuat');
-      expect(result.error).toEqual(errorMessage);
-
+      expect(result).toEqual(expectedResult);
       expect(mockScheduleServiceInstance.create).toHaveBeenCalledWith(
         userId,
         scheduleDto,
