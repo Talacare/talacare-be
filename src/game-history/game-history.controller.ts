@@ -12,7 +12,6 @@ import { GameHistoryService } from './game-history.service';
 import { CreateGameHistoryDto } from './dto/create-game-history-dto';
 import { ResponseUtil } from '../common/utils/response.util';
 import { CustomRequest } from 'src/common/interfaces/request.interface';
-import { GameHistory } from '@prisma/client';
 
 @Controller('game-history')
 export class GameHistoryController {
