@@ -1,7 +1,18 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { GameHistoryService } from './game-history.service';
 import { CreateGameHistoryDto } from './dto/create-game-history-dto';
 import { ResponseUtil } from '../common/utils/response.util';
+import { CustomRequest } from 'src/common/interfaces/request.interface';
+import { GameHistory } from '@prisma/client';
 
 @Controller('game-history')
 export class GameHistoryController {
@@ -34,5 +45,16 @@ export class GameHistoryController {
         { error: error.message },
       );
     }
+  }
+
+  @Get('/high-score/:gameType')
+  @HttpCode(HttpStatus.OK)
+  async getHighScore(
+    @Param('gameType') gameType: string,
+    @Req() request: CustomRequest,
+  ){
+    const userId = request.id.toString()
+    const result = await this.gameHistoryService.getHighScore(gameType, userId);
+    return this.responseUtil.response({}, { data: result });
   }
 }
