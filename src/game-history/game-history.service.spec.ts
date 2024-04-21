@@ -88,7 +88,7 @@ describe('GameHistoryService', () => {
   
     it('should return null if no game history found', async () => {
       const userId = 'user123';
-      const gameType = 'PUZZLE';
+      const gameType = 'JUMP_N_JUMP';
   
       mockFn.mockReturnValue(null)
       const result = await service.getHighScore(gameType, userId);
