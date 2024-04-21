@@ -4,4 +4,5 @@ export interface CustomRequest extends Request {
   email: string;
   token: string;
   id: string;
+  role: string;
 }

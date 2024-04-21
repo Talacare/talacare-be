@@ -10,7 +10,6 @@ describe('ExportDataService', () => {
   let prismaService: PrismaService;
 
   const mockFn = jest.fn();
-  const mockFindUniqueOrThrow = jest.fn();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,9 +22,6 @@ describe('ExportDataService', () => {
             gameHistory: {
               findMany: mockFn,
             },
-            user: {
-              findUniqueOrThrow: mockFindUniqueOrThrow,
-            },
           },
         },
       ],
@@ -37,25 +33,20 @@ describe('ExportDataService', () => {
 
   describe('generate', () => {
     it('should throw ForbiddenException when user is not admin', async () => {
-      const userId = '123e4567-e89b-12d3-a456-426614174000';
       const email = 'test@test.com';
+      const role = 'USER';
 
-      mockFindUniqueOrThrow.mockRejectedValue(new ForbiddenException());
+      const testFunction = async () => {
+        await service.exportGameData(email, role);
+      };
 
-      await expect(service.exportGameData(userId, email)).rejects.toThrowError(
-        ForbiddenException,
-      );
+      await expect(testFunction).rejects.toThrowError(ForbiddenException);
     });
 
     it('should generate and send email with game history for admin user', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
       const email = 'test@test.com';
-
-      mockFindUniqueOrThrow.mockResolvedValue({
-        id: userId,
-        role: 'ADMIN',
-        email: 'test@test.com',
-      });
+      const role = 'ADMIN';
 
       mockFn.mockResolvedValue([
         {
@@ -84,14 +75,7 @@ describe('ExportDataService', () => {
         },
       });
 
-      const response = await service.exportGameData(userId, email);
-
-      expect(prismaService.user.findUniqueOrThrow).toHaveBeenCalledWith({
-        where: {
-          id: userId,
-          role: 'ADMIN',
-        },
-      });
+      const response = await service.exportGameData(email, role);
 
       expect(prismaService.gameHistory.findMany).toHaveBeenCalledWith({
         orderBy: {
@@ -107,6 +91,7 @@ describe('ExportDataService', () => {
     it('should handle error scenario when exporting data fails', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
       const email = 'test@test.com';
+      const role = 'ADMIN';
 
       mockFn.mockResolvedValue([
         {
@@ -137,7 +122,7 @@ describe('ExportDataService', () => {
         },
       });
 
-      const response = await service.exportGameData(userId, email);
+      const response = await service.exportGameData(email, role);
 
       expect(response).toEqual('Export data failed');
     });

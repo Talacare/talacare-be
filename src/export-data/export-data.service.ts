@@ -7,22 +7,12 @@ import { createTransport } from 'nodemailer';
 export class ExportDataService {
   constructor(private prisma: PrismaService) {}
 
-  public async exportGameData(
-    userId: string,
-    emailTo: string,
-  ): Promise<string> {
-    const user = await this.prisma.user
-      .findUniqueOrThrow({
-        where: {
-          role: 'ADMIN',
-          id: userId,
-        },
-      })
-      .catch(() => {
-        throw new ForbiddenException(
-          'Only user with role admin can export the game data',
-        );
-      });
+  public async exportGameData(emailTo: string, role: string): Promise<string> {
+    if (role != 'ADMIN') {
+      throw new ForbiddenException(
+        'Only user with role admin can export the game data',
+      );
+    }
 
     const histories = await this.prisma.gameHistory.findMany({
       orderBy: {
