@@ -7,10 +7,14 @@ import { Schedule } from '@prisma/client';
 import { ResponseUtil } from '../common/utils/response.util';
 import { BadRequestException } from '@nestjs/common';
 import { GetSchedule } from './interfaces/get-schedule-interface';
+import { CustomRequest } from 'src/common/interfaces/request.interface';
 
 const mockScheduleServiceInstance = {
-  create: jest.fn((dto) => {
-    return { id: 1, ...dto };
+  create: jest.fn().mockResolvedValue({
+    id: 'mock-id',
+    hour: 10,
+    minute: 30,
+    userId: '1937f86d-fce7-4ee6-88af-14df7bddce4a',
   }),
   delete: jest.fn(),
   getAll: jest.fn(),
@@ -43,18 +47,27 @@ describe('ScheduleController', () => {
 
   describe('create', () => {
     it('should create a new schedule', async () => {
+      const userId = '1937f86d-fce7-4ee6-88af-14df7bddce4a';
       const scheduleDto: CreateScheduleDto = {
-        userId: '81c41b32-7a45-4b64-a98e-928f16fc26d7',
         hour: 10,
         minute: 30,
       };
+      const request = { id: userId } as CustomRequest;
 
-      await expect(controller.create(scheduleDto)).resolves.toEqual({
-        id: expect.any(Number),
-        ...scheduleDto,
-      });
+      const expectedResult = {
+        id: expect.any(String),
+        hour: 10,
+        minute: 30,
+        userId: userId,
+      };
 
-      expect(mockScheduleServiceInstance.create).toHaveBeenLastCalledWith(
+      mockScheduleServiceInstance.create.mockResolvedValue(expectedResult);
+
+      const result = await controller.create(request, scheduleDto);
+
+      expect(result).toEqual(expectedResult);
+      expect(mockScheduleServiceInstance.create).toHaveBeenCalledWith(
+        userId,
         scheduleDto,
       );
     });
@@ -153,7 +166,6 @@ describe('ScheduleController', () => {
   });
 
   describe('getAll', () => {
-
     it('should get schedules for a user', async () => {
       const request: any = { id: 'f16b14ee-f594-4b7a-bf1d-afe67a9704aa' };
       const expectedSchedules: GetSchedule[] = [
@@ -168,16 +180,18 @@ describe('ScheduleController', () => {
           minute: 35,
         },
       ];
-      mockScheduleServiceInstance.getSchedulesByUserId.mockResolvedValue(expectedSchedules);
+      mockScheduleServiceInstance.getSchedulesByUserId.mockResolvedValue(
+        expectedSchedules,
+      );
 
       const schedules = await controller.get(request);
 
       expect(schedules).toEqual(
         responseUtil.response({}, { data: expectedSchedules }),
       );
-      expect(mockScheduleServiceInstance.getSchedulesByUserId).toHaveBeenLastCalledWith(
-        request.id,
-      );
+      expect(
+        mockScheduleServiceInstance.getSchedulesByUserId,
+      ).toHaveBeenLastCalledWith(request.id);
     });
   });
 });

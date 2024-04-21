@@ -1,13 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  HttpStatus,
-  BadRequestException,
-  Logger,
-} from '@nestjs/common';
+import { HttpStatus, BadRequestException, Logger } from '@nestjs/common';
 import { HttpExceptionFilter } from './http-exception.filter';
-import {
-  PrismaClientKnownRequestError,
-} from '@prisma/client/runtime/library';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { mockDeep } from 'jest-mock-extended';
 
 describe('HttpExceptionFilter', () => {
@@ -20,11 +14,9 @@ describe('HttpExceptionFilter', () => {
   const logger = mockDeep<Logger>();
 
   beforeEach(async () => {
-
     const module: TestingModule = await Test.createTestingModule({
-      providers: [HttpExceptionFilter]
-    })
-    .compile();
+      providers: [HttpExceptionFilter],
+    }).compile();
 
     module.useLogger(logger);
     filter = module.get<HttpExceptionFilter>(HttpExceptionFilter);

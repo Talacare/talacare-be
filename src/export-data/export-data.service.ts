@@ -22,12 +22,6 @@ export class ExportDataService {
 
     try {
       const { worksheet, workbook, transporter } = this.setup();
-      worksheet.columns = [
-        { header: 'Game Type', key: 'gameType' },
-        { header: 'Score', key: 'score' },
-        { header: 'Start Time', key: 'startTime' },
-        { header: 'End Time', key: 'endTime' },
-      ];
 
       histories.forEach((row) => {
         worksheet.addRow({
@@ -85,6 +79,13 @@ export class ExportDataService {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
+
+    worksheet.columns = [
+      { header: 'Game Type', key: 'gameType' },
+      { header: 'Score', key: 'score' },
+      { header: 'Start Time', key: 'startTime' },
+      { header: 'End Time', key: 'endTime' },
+    ];
 
     return { workbook, worksheet, transporter };
   }

@@ -15,10 +15,26 @@ export class ScheduleService {
   constructor(private prisma: PrismaService) {}
 
   public async create(
+    userId: string,
     scheduleData: CreateScheduleInput,
   ): Promise<CreateSchedule> {
+    const existingSchedule = await this.prisma.schedule.findFirst({
+      where: {
+        userId: userId,
+        hour: scheduleData.hour,
+        minute: scheduleData.minute,
+      },
+    });
+
+    if (existingSchedule) {
+      throw new BadRequestException('Jadwal yang sama sudah tersedia');
+    }
+
     return this.prisma.schedule.create({
-      data: scheduleData,
+      data: {
+        ...scheduleData,
+        userId: userId,
+      },
     });
   }
 
