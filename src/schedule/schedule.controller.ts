@@ -28,9 +28,13 @@ export class ScheduleController {
   @Post('')
   @HttpCode(HttpStatus.CREATED)
   async create(
+    @Req() request: CustomRequest,
     @Body() createScheduleDto: CreateScheduleDto,
-  ): Promise<Schedule> {
-    return this.scheduleService.create(createScheduleDto);
+  ): Promise<any> {
+    return this.scheduleService.create(
+      request.id.toString(),
+      createScheduleDto,
+    );
   }
 
   @Delete(':id')
@@ -52,7 +56,9 @@ export class ScheduleController {
   @Get('')
   @HttpCode(HttpStatus.OK)
   async get(@Req() request: CustomRequest): Promise<GetSchedule[]> {
-    const schedules = await this.scheduleService.getSchedulesByUserId(request.id);
+    const schedules = await this.scheduleService.getSchedulesByUserId(
+      request.id.toString(),
+    );
     return this.responseUtil.response({}, { data: schedules });
   }
 }
