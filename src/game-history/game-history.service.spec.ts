@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameHistoryService } from './game-history.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { GameType } from '@prisma/client';
+import { GameHistory, GameType } from '@prisma/client';
+import { BadRequestException } from '@nestjs/common';
 
 describe('GameHistoryService', () => {
   let service: GameHistoryService;
@@ -17,6 +18,7 @@ describe('GameHistoryService', () => {
           useValue: {
             gameHistory: {
               create: mockFn,
+              findFirst: mockFn,
             },
           },
         },
@@ -52,4 +54,46 @@ describe('GameHistoryService', () => {
       });
     });
   });
+  
+  describe('get high score', () => {
+    it('should return the highest score for a valid game type and user ID', async () => {
+      const mockGameHistory: GameHistory = {
+        id: '1',
+        userId: 'user123',
+        gameType: 'PUZZLE',
+        score: 100,
+        startTime: new Date(),
+        endTime: new Date(),
+      };
+      
+      mockFn.mockReturnValue(mockGameHistory)
+      const result = await service.getHighScore('PUZZLE', 'user123');
+  
+      expect(result.id).toEqual(mockGameHistory.id);
+      expect(result.userId).toEqual(mockGameHistory.userId);
+      expect(result.gameType).toEqual(mockGameHistory.gameType);
+      expect(result.score).toEqual(mockGameHistory.score);
+      expect(result.startTime).toEqual(mockGameHistory.startTime);
+      expect(result.endTime).toEqual(mockGameHistory.endTime);
+    });
+  
+    it('should throw BadRequestException for an invalid game type', async () => {
+      const userId = 'user123';
+      const gameType = 'INVALID';
+      
+      await expect(service.getHighScore(gameType, userId)).rejects.toThrow(
+        BadRequestException
+      );
+    });
+  
+    it('should return null if no game history found', async () => {
+      const userId = 'user123';
+      const gameType = 'PUZZLE';
+  
+      mockFn.mockReturnValue(null)
+      const result = await service.getHighScore(gameType, userId);
+  
+      expect(result).toBeNull();
+    });
+  })
 });
