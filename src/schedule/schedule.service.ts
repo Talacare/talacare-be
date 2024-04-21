@@ -77,10 +77,6 @@ export class ScheduleService {
       orderBy: [{ hour: 'asc' }, { minute: 'asc' }],
     });
 
-    return schedules.map((schedule) => ({
-      id: schedule.id,
-      hour: schedule.hour,
-      minute: schedule.minute,
-    }));
+    return schedules;
   }
 }

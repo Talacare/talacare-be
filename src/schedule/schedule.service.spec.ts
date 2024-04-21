@@ -206,13 +206,11 @@ describe('ScheduleService', () => {
       const prismaSchedules = [
         {
           id: 'a1499bda-e94d-4c97-8dee-ac1b2708a76f',
-          userId: userId,
           hour: 8,
           minute: 0,
         },
         {
           id: '3d11406f-b677-42d3-a597-c975402ff2d2',
-          userId: userId,
           hour: 12,
           minute: 30,
         },
