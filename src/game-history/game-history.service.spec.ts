@@ -56,10 +56,12 @@ describe('GameHistoryService', () => {
   });
   
   describe('get high score', () => {
+    const userId = 'user123';
+
     it('should return the highest score for a valid game type and user ID', async () => {
       const mockGameHistory: GameHistory = {
         id: '1',
-        userId: 'user123',
+        userId,
         gameType: 'PUZZLE',
         score: 100,
         startTime: new Date(),
@@ -78,7 +80,6 @@ describe('GameHistoryService', () => {
     });
   
     it('should throw BadRequestException for an invalid game type', async () => {
-      const userId = 'user123';
       const gameType = 'INVALID';
       
       await expect(service.getHighScore(gameType, userId)).rejects.toThrow(
@@ -87,7 +88,6 @@ describe('GameHistoryService', () => {
     });
   
     it('should return null if no game history found', async () => {
-      const userId = 'user123';
       const gameType = 'JUMP_N_JUMP';
   
       mockFn.mockReturnValue(null)

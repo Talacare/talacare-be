@@ -83,6 +83,10 @@ describe('GameHistoryController', () => {
   });
 
   describe('getHighScore', () => {
+    const mockCustomRequest: CustomRequest = {
+      id: 'user123',
+    } as unknown as CustomRequest
+
     it('should return the high score for a valid game type', async () => {
       const gameType = 'PUZZLE';
       const expectedResult: GameHistory = {
@@ -93,9 +97,6 @@ describe('GameHistoryController', () => {
         startTime: new Date(),
         endTime: new Date(),
       };
-      const mockCustomRequest: CustomRequest = {
-        id: 'user123',
-      } as unknown as CustomRequest
 
       jest.spyOn(gameHistoryService, 'getHighScore').mockResolvedValue(expectedResult);
       jest.spyOn(responseUtil, 'response');
@@ -112,9 +113,6 @@ describe('GameHistoryController', () => {
 
     it('should handle invalid game type', async () => {
       const gameType = 'INVALID';
-      const mockCustomRequest: CustomRequest = {
-        id: 'user123',
-      } as unknown as CustomRequest
 
       jest.spyOn(gameHistoryService, 'getHighScore').mockRejectedValue(new BadRequestException());
 
@@ -124,9 +122,6 @@ describe('GameHistoryController', () => {
 
     it('should return null if no game history found', async () => {
       const gameType = 'PUZZLE';
-      const mockCustomRequest: CustomRequest = {
-        id: 'user123',
-      } as unknown as CustomRequest
 
       jest.spyOn(gameHistoryService, 'getHighScore').mockResolvedValue(null);
       jest.spyOn(responseUtil, 'response');
