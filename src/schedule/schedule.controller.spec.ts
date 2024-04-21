@@ -5,7 +5,7 @@ import { CreateScheduleDto } from './dto/create-schedule-dto';
 import { GetScheduleQueryDTO } from './dto/get-schedule.dto';
 import { Schedule } from '@prisma/client';
 import { ResponseUtil } from '../common/utils/response.util';
-import { BadRequestException, HttpStatus } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 import { GetSchedule } from './interfaces/get-schedule-interface';
 import { CustomRequest } from 'src/common/interfaces/request.interface';
 
