@@ -38,17 +38,24 @@ describe('GameHistoryService', () => {
         score: 100,
         startTime: new Date(),
         endTime: new Date(),
-        userId: '123e4567-e89b-12d3-a456-426614174000',
       };
 
-      const expected = { ...gameHistoryData, id: expect.any(Number) };
+      const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const expected = {
+        ...gameHistoryData,
+        userId: userId,
+        id: expect.any(String),
+      };
       mockFn.mockReturnValue(expected);
-      const result = await service.create(gameHistoryData);
+      const result = await service.create(userId, gameHistoryData);
 
       expect(result).toEqual(expected);
       expect(prismaService.gameHistory.create).toHaveBeenCalledTimes(1);
       expect(prismaService.gameHistory.create).toHaveBeenCalledWith({
-        data: gameHistoryData,
+        data: {
+          ...gameHistoryData,
+          userId,
+        },
       });
     });
   });
