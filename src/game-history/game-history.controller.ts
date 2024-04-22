@@ -1,7 +1,15 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { GameHistoryService } from './game-history.service';
 import { CreateGameHistoryDto } from './dto/create-game-history-dto';
 import { ResponseUtil } from '../common/utils/response.util';
+import { CustomRequest } from 'src/common/interfaces/request.interface';
 
 @Controller('game-history')
 export class GameHistoryController {
@@ -13,10 +21,15 @@ export class GameHistoryController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(
+    @Req() request: CustomRequest,
     @Body() createGameHistoryDto: CreateGameHistoryDto,
   ): Promise<any> {
     try {
-      const result = await this.gameHistoryService.create(createGameHistoryDto);
+      const userId = request.id.toString();
+      const result = await this.gameHistoryService.create(
+        userId,
+        createGameHistoryDto,
+      );
       return this.responseUtil.response(
         {
           responseMessage: 'Game history created successfully',

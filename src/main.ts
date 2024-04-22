@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import * as Sentry from '@sentry/node';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -9,7 +10,6 @@ async function bootstrap() {
 
   // GlitchTip Monitoring Setup
   const client = new PrismaClient();
-  const Sentry = require('@sentry/node');
   Sentry.init({
     dsn: process.env.SENTRY_DNS,
     enableTracing: true,

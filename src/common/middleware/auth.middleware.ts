@@ -10,8 +10,6 @@ import { CustomRequest } from '../interfaces/request.interface';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  constructor() {}
-
   use(req: CustomRequest, _: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
 

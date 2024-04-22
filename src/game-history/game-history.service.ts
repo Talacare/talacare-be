@@ -7,9 +7,15 @@ import { GameHistory } from './interfaces/game-history.interface';
 export class GameHistoryService {
   constructor(private prisma: PrismaService) {}
 
-  public async create(gameHistoryData: GameHistoryInput): Promise<GameHistory> {
+  public async create(
+    userId: string,
+    gameHistoryData: GameHistoryInput,
+  ): Promise<GameHistory> {
     return this.prisma.gameHistory.create({
-      data: gameHistoryData,
+      data: {
+        ...gameHistoryData,
+        userId: userId,
+      },
     });
   }
 }

@@ -14,7 +14,4 @@ export class CreateGameHistoryDto {
 
   @IsDateString()
   endTime: Date;
-
-  @IsUUID()
-  userId: string;
 }
