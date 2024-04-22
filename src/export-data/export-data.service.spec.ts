@@ -89,32 +89,10 @@ describe('ExportDataService', () => {
     });
 
     it('should handle error scenario when exporting data fails', async () => {
-      const userId = '123e4567-e89b-12d3-a456-426614174000';
       const email = 'test@test.com';
       const role = 'ADMIN';
 
-      mockFn.mockResolvedValue([
-        {
-          gameType: GameType.JUMP_N_JUMP,
-          score: 100,
-          startTime: new Date(),
-          endTime: new Date(),
-          userId: userId,
-        },
-      ]);
-
       service.setup = jest.fn().mockReturnValue({
-        workbook: {
-          xlsx: {
-            writeBuffer: jest
-              .fn()
-              .mockResolvedValue(Buffer.from('buffer content')),
-          },
-        },
-        worksheet: {
-          addRow: jest.fn(),
-          columns: [],
-        },
         transporter: {
           sendMail: jest
             .fn()
