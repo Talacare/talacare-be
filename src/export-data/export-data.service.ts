@@ -25,6 +25,7 @@ export class ExportDataService {
 
       histories.forEach((row) => {
         worksheet.addRow({
+          userId: row.userId,
           gameType: row.gameType,
           score: row.score,
           startTime: new Date(row.startTime),
