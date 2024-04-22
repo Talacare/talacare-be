@@ -6,17 +6,13 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateScheduleInput } from './interfaces/create-schedule-input.interface';
 import { CreateSchedule } from './interfaces/create-schedule.interface';
-import { ResponseUtil } from '../common/utils/response.util';
 import { GetScheduleQueryDTO } from './dto/get-schedule.dto';
 import { Schedule } from '@prisma/client';
 import { GetSchedule } from './interfaces/get-schedule-interface';
 
 @Injectable()
 export class ScheduleService {
-  constructor(
-    private prisma: PrismaService,
-    private readonly responseUtil: ResponseUtil,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   public async create(
     userId: string,

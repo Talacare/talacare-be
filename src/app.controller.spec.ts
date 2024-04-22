@@ -29,7 +29,9 @@ describe('AppController', () => {
 
   describe('getHello', () => {
     it('should return users from the app service', async () => {
-      const mockUsers: User[] = [{ id: '1', email: 'test@example.com' }];
+      const mockUsers: User[] = [
+        { id: '1', email: 'test@example.com', role: 'USER' },
+      ];
       mockAppService.getHello.mockResolvedValue(mockUsers);
 
       const result = await appController.getHello();
@@ -52,7 +54,7 @@ describe('AppController', () => {
   describe('postUser', () => {
     it('should call postUser on the app service with the provided email', async () => {
       const email = 'test@example.com';
-      const mockUser: User = { id: '1', email };
+      const mockUser: User = { id: '1', email, role: 'USER' };
       mockAppService.postUser.mockResolvedValue(mockUser);
 
       const result = await appController.postUser(email);

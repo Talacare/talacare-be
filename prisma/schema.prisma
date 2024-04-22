@@ -12,6 +12,7 @@ model User {
   id          String        @id @default(uuid())
   email       String        @unique
   GameHistory GameHistory[]
+  role        Role          @default(value: USER)
   Schedule    Schedule[]
 }
 
@@ -40,4 +41,9 @@ model Schedule {
 enum GameType {
   PUZZLE
   JUMP_N_JUMP
+}
+
+enum Role {
+  USER
+  ADMIN
 }

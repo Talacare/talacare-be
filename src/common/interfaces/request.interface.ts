@@ -2,7 +2,7 @@ import { Request } from 'express';
 
 export interface CustomRequest extends Request {
   email: string;
-  name: string;
-  picture_url: string;
+  token: string;
   id: string;
+  role: string;
 }

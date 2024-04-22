@@ -45,6 +45,7 @@ describe('AuthService', () => {
     mockUser = {
       id: '81c41b32-7a45-4b64-a98e-928f16fc26d7',
       email: 'john@example.com',
+      role: 'USER',
     };
   });
 
@@ -92,6 +93,7 @@ describe('AuthService', () => {
         {
           user_id: '81c41b32-7a45-4b64-a98e-928f16fc26d7',
           email: 'john@example.com',
+          role: 'USER',
         },
         process.env.JWT_SECRET,
         { expiresIn: process.env.TOKEN_EXPIRED_AT },
