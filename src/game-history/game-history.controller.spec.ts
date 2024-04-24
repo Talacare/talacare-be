@@ -1,11 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameHistoryController } from './game-history.controller';
-import { GameType } from '@prisma/client';
+import { GameHistory, GameType } from '@prisma/client';
 import { GameHistoryService } from './game-history.service';
 import { CreateGameHistoryDto } from './dto/create-game-history-dto';
-import { HttpStatus } from '@nestjs/common';
+import { BadRequestException, HttpStatus } from '@nestjs/common';
 import { ResponseUtil } from '../common/utils/response.util';
 import { PrismaService } from '../prisma/prisma.service';
+import { CustomRequest } from 'src/common/interfaces/request.interface';
 
 describe('GameHistoryController', () => {
   let controller: GameHistoryController;
@@ -78,6 +79,61 @@ describe('GameHistoryController', () => {
       expect(result.responseCode).toEqual(HttpStatus.INTERNAL_SERVER_ERROR);
       expect(result.responseStatus).toEqual('FAILED');
       expect(result.responseMessage).toEqual('Failed to create game history');
+    });
+  });
+
+  describe('getHighScore', () => {
+    const mockCustomRequest: CustomRequest = {
+      id: 'user123',
+    } as unknown as CustomRequest
+
+    it('should return the high score for a valid game type', async () => {
+      const gameType = 'PUZZLE';
+      const expectedResult: GameHistory = {
+        id: '1',
+        userId: 'user123',
+        gameType: 'PUZZLE',
+        score: 100,
+        startTime: new Date(),
+        endTime: new Date(),
+      };
+
+      jest.spyOn(gameHistoryService, 'getHighScore').mockResolvedValue(expectedResult);
+      jest.spyOn(responseUtil, 'response');
+
+      const result = await controller.getHighScore(gameType, mockCustomRequest);
+
+      expect(result.data).toEqual(expectedResult);
+      expect(result.responseCode).toEqual(HttpStatus.OK);
+      expect(result.responseStatus).toEqual('SUCCESS');
+      expect(result.responseMessage).toEqual('Data retrieved successfully');
+      expect(gameHistoryService.getHighScore).toHaveBeenCalledWith(gameType, 'user123');
+      expect(responseUtil.response).toHaveBeenCalledWith({}, { data: expectedResult });
+    });
+
+    it('should handle invalid game type', async () => {
+      const gameType = 'INVALID';
+
+      jest.spyOn(gameHistoryService, 'getHighScore').mockRejectedValue(new BadRequestException());
+
+      await expect(controller.getHighScore(gameType, mockCustomRequest)).rejects.toThrow(BadRequestException);
+      expect(gameHistoryService.getHighScore).toHaveBeenCalledWith(gameType, 'user123');
+    });
+
+    it('should return null if no game history found', async () => {
+      const gameType = 'PUZZLE';
+
+      jest.spyOn(gameHistoryService, 'getHighScore').mockResolvedValue(null);
+      jest.spyOn(responseUtil, 'response');
+
+      const result = await controller.getHighScore(gameType, mockCustomRequest);
+
+      expect(result.data).toBeNull();
+      expect(result.responseCode).toEqual(HttpStatus.OK);
+      expect(result.responseStatus).toEqual('SUCCESS');
+      expect(result.responseMessage).toEqual('Data retrieved successfully');
+      expect(gameHistoryService.getHighScore).toHaveBeenCalledWith(gameType, 'user123');
+      expect(responseUtil.response).toHaveBeenCalledWith({}, { data: null });
     });
   });
 });
