@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   Req,
 } from '@nestjs/common';
@@ -47,5 +49,16 @@ export class GameHistoryController {
         { error: error.message },
       );
     }
+  }
+
+  @Get('/high-score/:gameType')
+  @HttpCode(HttpStatus.OK)
+  async getHighScore(
+    @Param('gameType') gameType: string,
+    @Req() request: CustomRequest,
+  ) {
+    const userId = request.id.toString();
+    const result = await this.gameHistoryService.getHighScore(gameType, userId);
+    return this.responseUtil.response({}, { data: result });
   }
 }
