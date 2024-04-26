@@ -12,10 +12,13 @@ export class GameHistoryService {
     userId: string,
     gameHistoryData: GameHistoryInput,
   ): Promise<GameHistory> {
+    const { startTime, endTime, ...restOfGameHistoryData } = gameHistoryData;
     return this.prisma.gameHistory.create({
       data: {
-        ...gameHistoryData,
+        startTime: new Date(startTime),
+        endTime: new Date(endTime),
         userId: userId,
+        ...restOfGameHistoryData,
       },
     });
   }
@@ -32,7 +35,7 @@ export class GameHistoryService {
           gameType === 'PUZZLE' ? GameType.PUZZLE : GameType.JUMP_N_JUMP,
       },
       orderBy: {
-        score: 'desc'
+        score: 'desc',
       },
     });
   }
