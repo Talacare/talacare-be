@@ -34,7 +34,7 @@ export class AuthMiddleware implements NestMiddleware {
       } else {
         req.id = decoded.user_id;
         req.email = decoded.email;
-        req.token = decoded.token;
+        req.role = decoded.role;
         next();
       }
     });
