@@ -8,9 +8,18 @@ import { GameType } from '@prisma/client';
 export class GameHistoryService {
   constructor(private prisma: PrismaService) {}
 
-  public async create(gameHistoryData: GameHistoryInput): Promise<GameHistory> {
+  public async create(
+    userId: string,
+    gameHistoryData: GameHistoryInput,
+  ): Promise<GameHistory> {
+    const { startTime, endTime, ...restOfGameHistoryData } = gameHistoryData;
     return this.prisma.gameHistory.create({
-      data: gameHistoryData,
+      data: {
+        startTime: new Date(startTime),
+        endTime: new Date(endTime),
+        userId: userId,
+        ...restOfGameHistoryData,
+      },
     });
   }
 
@@ -26,7 +35,7 @@ export class GameHistoryService {
           gameType === 'PUZZLE' ? GameType.PUZZLE : GameType.JUMP_N_JUMP,
       },
       orderBy: {
-        score: 'desc'
+        score: 'desc',
       },
     });
   }

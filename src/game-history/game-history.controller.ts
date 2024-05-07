@@ -23,10 +23,15 @@ export class GameHistoryController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(
+    @Req() request: CustomRequest,
     @Body() createGameHistoryDto: CreateGameHistoryDto,
   ): Promise<any> {
     try {
-      const result = await this.gameHistoryService.create(createGameHistoryDto);
+      const userId = request.id.toString();
+      const result = await this.gameHistoryService.create(
+        userId,
+        createGameHistoryDto,
+      );
       return this.responseUtil.response(
         {
           responseMessage: 'Game history created successfully',
@@ -51,8 +56,8 @@ export class GameHistoryController {
   async getHighScore(
     @Param('gameType') gameType: string,
     @Req() request: CustomRequest,
-  ){
-    const userId = request.id.toString()
+  ) {
+    const userId = request.id.toString();
     const result = await this.gameHistoryService.getHighScore(gameType, userId);
     return this.responseUtil.response({}, { data: result });
   }

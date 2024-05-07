@@ -35,11 +35,13 @@ describe('GameHistoryController', () => {
         score: 100,
         startTime: new Date(),
         endTime: new Date(),
-        userId: '123e4567-e89b-12d3-a456-426614174000',
       };
+      const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const request = { id: userId } as CustomRequest;
 
       const expectedResult = {
         ...gameHistoryDto,
+        userId: userId,
         id: expect.any(String),
       };
 
@@ -48,7 +50,7 @@ describe('GameHistoryController', () => {
         .mockResolvedValue(expectedResult);
       jest.spyOn(responseUtil, 'response');
 
-      const result = await controller.create(gameHistoryDto);
+      const result = await controller.create(request, gameHistoryDto);
 
       expect(result.responseCode).toEqual(HttpStatus.CREATED);
       expect(result.responseStatus).toEqual('SUCCESS');
@@ -56,7 +58,10 @@ describe('GameHistoryController', () => {
         'Game history created successfully',
       );
       expect(result.data).toEqual(expectedResult);
-      expect(gameHistoryService.create).toHaveBeenCalledWith(gameHistoryDto);
+      expect(gameHistoryService.create).toHaveBeenCalledWith(
+        userId,
+        gameHistoryDto,
+      );
     });
 
     it('should handle error when creating game history', async () => {
@@ -65,8 +70,10 @@ describe('GameHistoryController', () => {
         score: 100,
         startTime: new Date(),
         endTime: new Date(),
-        userId: '123e4567-e89b-12d3-a456-426614174000',
       };
+
+      const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const request = { id: userId } as CustomRequest;
 
       const errorMessage = 'Failed to create game history';
       jest
@@ -74,7 +81,7 @@ describe('GameHistoryController', () => {
         .mockRejectedValue(new Error(errorMessage));
       jest.spyOn(responseUtil, 'response');
 
-      const result = await controller.create(gameHistoryDto);
+      const result = await controller.create(request, gameHistoryDto);
 
       expect(result.responseCode).toEqual(HttpStatus.INTERNAL_SERVER_ERROR);
       expect(result.responseStatus).toEqual('FAILED');
