@@ -35,14 +35,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set Up SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
       - name: SSH into Local Device and Pull Docker Image
         run: |
-          ssh -o StrictHostKeyChecking=no muflihmaxi@180.252.174.221 \
+          ssh ip172-18-0-87-cotgd0ol2o9000at0tc0@direct.labs.play-with-docker.com \
           "docker pull gansixeneh/talacare-nest:latest && \
            docker stop local-talacare-be && \
            docker rm local-talacare-be && \
