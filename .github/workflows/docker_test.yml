@@ -1,0 +1,50 @@
+name: Build, Push and Pull Docker Image
+
+# Trigger on push to main or specified branches
+on:
+  push:
+    branches:
+      - test-docker
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Registry
+        run: |
+          docker login -u=${{ secrets.DOCKER_USERNAME }} -p=${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker Image
+        run: |
+          docker build -t nest-app .
+
+      - name: Tag Docker Image
+        run: |
+          docker tag nest-app gansixeneh/talacare-nest:latest
+
+      - name: Push Docker Image
+        run: |
+          docker push gansixeneh/talacare-nest:latest
+
+  ssh_and_pull:
+    runs-on: ubuntu-latest
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Set Up SSH
+        uses: webfactory/ssh-agent@v0.8.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: SSH into Local Device and Pull Docker Image
+        run: |
+          ssh -o StrictHostKeyChecking=no muflihmaxi@180.252.174.221 \
+          "docker pull gansixeneh/talacare-nest:latest && \
+           docker stop local-talacare-be && \
+           docker rm local-talacare-be && \
+           docker run -d --name local-talacare-be gansixeneh/talacare-nest:latest"
