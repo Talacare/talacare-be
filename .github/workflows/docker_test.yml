@@ -41,12 +41,5 @@ jobs:
           
       - name: SSH into Local Device and Pull Docker Image
         run: |
-          ssh -o StrictHostKeyChecking=no ip172-18-0-106-cotiv4i91nsg00cpedl0@direct.labs.play-with-docker.com \
-          "set -xe; \
-          docker pull gansixeneh/talacare-nest:latest || exit 1; \
-          docker images || exit 1; \
-          docker ps || exit 1; \
-          docker stop local-talacare-be || true; \
-          docker rm local-talacare-be || true; \
-          docker run -d -p 7630:3000 --name local-talacare-be gansixeneh/talacare-nest:latest || exit 1; \
-          docker ps || exit 1"
+          ssh -o StrictHostKeychecking=no ip172-18-0-106-cotiv4i91nsg00cpedl0@direct.labs.play-with-docker.com \
+          "docker pull gansixeneh/talacare-nest:latest"
