@@ -31,9 +31,8 @@ jobs:
           docker push gansixeneh/talacare-nest:latest
 
   ssh_and_pull:
+    needs: build_and_push
     runs-on: ubuntu-latest
-
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Set Up SSH
