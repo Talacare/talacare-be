@@ -7,31 +7,31 @@ on:
       - test-docker
 
 jobs:
-  build_and_push:
-    runs-on: ubuntu-latest
+  # build_and_push:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v3
 
-      - name: Log in to Docker Registry
-        run: |
-          docker login -u=${{ secrets.DOCKER_USERNAME }} -p=${{ secrets.DOCKER_PASSWORD }}
+  #     - name: Log in to Docker Registry
+  #       run: |
+  #         docker login -u=${{ secrets.DOCKER_USERNAME }} -p=${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker Image
-        run: |
-          docker build -t nest-app .
+  #     - name: Build Docker Image
+  #       run: |
+  #         docker build -t nest-app .
 
-      - name: Tag Docker Image
-        run: |
-          docker tag nest-app gansixeneh/talacare-nest:latest
+  #     - name: Tag Docker Image
+  #       run: |
+  #         docker tag nest-app gansixeneh/talacare-nest:latest
 
-      - name: Push Docker Image
-        run: |
-          docker push gansixeneh/talacare-nest:latest
+  #     - name: Push Docker Image
+  #       run: |
+  #         docker push gansixeneh/talacare-nest:latest
 
   ssh_and_pull:
-    needs: build_and_push
+    # needs: build_and_push
     runs-on: ubuntu-latest
 
     steps:
@@ -39,10 +39,15 @@ jobs:
         run: |
           ssh-keygen -t ed25519 -P "" -f ~/.ssh/id_ed25519
 
+      steps:
       - name: SSH into Local Device and Pull Docker Image
         run: |
-          ssh -vvv -o StrictHostKeychecking=no ip172-18-0-106-cotiv4i91nsg00cpedl0@direct.labs.play-with-docker.com \
-          "docker pull gansixeneh/talacare-nest:latest && \
-           docker stop local-talacare-be && \
-           docker rm local-talacare-be && \
-           docker run -d -p 7630:3000 --name local-talacare-be gansixeneh/talacare-nest:latest"
+          ssh -o StrictHostKeychecking=no ip172-18-0-106-cotiv4i91nsg00cpedl0@direct.labs.play-with-docker.com \
+          "set -e; \
+          docker pull gansixeneh/talacare-nest:latest; \
+          docker images; \
+          docker ps; \
+          docker stop local-talacare-be || true; \
+          docker rm local-talacare-be || true; \
+          docker run -d -p 7630:3000 --name local-talacare-be gansixeneh/talacare-nest:latest; \
+          docker ps"
