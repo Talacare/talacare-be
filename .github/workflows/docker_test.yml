@@ -38,15 +38,7 @@ jobs:
       - name: Generate SSH Key
         run: |
           ssh-keygen -t ed25519 -P "" -f ~/.ssh/id_ed25519
-      
-      - name: ping
-        run: |
-          ping -c4 ip172-18-0-106-cotiv4i91nsg00cpedl0@direct.labs.play-with-docker.com
-
-      - name: "SSH Keyscan"
-        run: |
-          ssh-keyscan -H direct.labs.play-with-docker.com >> ~/.ssh/known_hosts
           
       - name: SSH into Local Device and Pull Docker Image
         run: |
-          ssh ip172-18-0-106-cotiv4i91nsg00cpedl0@direct.labs.play-with-docker.com "echo halo"
+          ssh ip172-18-0-51-cotl8hgl2o9000at18n0@direct.labs.play-with-docker.com "touch github"
