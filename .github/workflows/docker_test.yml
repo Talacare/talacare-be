@@ -39,10 +39,10 @@ jobs:
         run: |
           ssh-keygen -t ed25519 -P "" -f ~/.ssh/id_ed25519
       
-      - name: ping
-        run: |
-          ping -c4 ip172-18-0-106-cotiv4i91nsg00cpedl0@direct.labs.play-with-docker.com
+      # - name: ping
+      #   run: |
+      #     ping -c4 ip172-18-0-106-cotiv4i91nsg00cpedl0@direct.labs.play-with-docker.com
           
       - name: SSH into Local Device and Pull Docker Image
         run: |
-          ssh -o StrictHostKeychecking=no ip172-18-0-106-cotiv4i91nsg00cpedl0@direct.labs.play-with-docker.com "echo halo"
+          echo "yes" | ssh -o ip172-18-0-106-cotiv4i91nsg00cpedl0@direct.labs.play-with-docker.com "echo halo"
