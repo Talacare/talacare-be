@@ -45,4 +45,4 @@ jobs:
           
       - name: SSH into Local Device and Pull Docker Image
         run: |
-          echo "yes" | ssh -o ip172-18-0-106-cotiv4i91nsg00cpedl0@direct.labs.play-with-docker.com "echo halo"
+          echo "yes" | ssh ip172-18-0-106-cotiv4i91nsg00cpedl0@direct.labs.play-with-docker.com "echo halo"
