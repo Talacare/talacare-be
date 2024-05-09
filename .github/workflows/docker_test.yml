@@ -46,4 +46,4 @@ jobs:
           "docker pull gansixeneh/talacare-nest:latest && \
           docker stop talacare-deployed && \
           docker rm talacare-deployed && \
-          docker run --env-file .env -p 80:3050 --name talacare-deployed gansixeneh/talacare-nest:latest"
+          docker run -d --env-file .env -p 80:3050 --name talacare-deployed gansixeneh/talacare-nest:latest"
