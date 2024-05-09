@@ -44,4 +44,6 @@ jobs:
         run: |
           ssh -o StrictHostKeychecking=no muflihmaxi@34.168.160.189 \
           "docker pull gansixeneh/talacare-nest:latest && \
+          docker stop talacare-deployed && \
+          docker rm talacare-deployed && \
           docker run -p 80:3000 --name talacare-deployed gansixeneh/talacare-nest:latest"
