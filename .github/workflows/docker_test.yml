@@ -35,10 +35,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Generate SSH Key
-        run: |
-          ssh-keygen -t ed25519 -P "" -f ~/.ssh/id_ed25519
+      - name: Set Up SSH
+         uses: webfactory/ssh-agent@v0.9.0
+         with:
+           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           
       - name: SSH into Local Device and Pull Docker Image
         run: |
-          ssh ip172-18-0-51-cotl8hgl2o9000at18n0@direct.labs.play-with-docker.com "touch github"
+          ssh -o StrictHostKeychecking=no muflihmaxi@34.168.160.189 \
+          "docker pull gansixeneh/talacare-nest:latest && \
+          docker stop talacare-deployed && \
+          docker rm talacare-deployed && \
+          docker run -p 80:3000 --name talacare-deployed gansixeneh/talacare-nest:latest"
