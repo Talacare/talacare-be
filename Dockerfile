@@ -17,7 +17,7 @@ COPY . .
 RUN npx prisma generate
 
 # Expose the port your Nest.js application is listening on
-EXPOSE 5000
+EXPOSE 3000
 
 # Command to start your Nest.js application
 CMD [ "yarn", "start"]
