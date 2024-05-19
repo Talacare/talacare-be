@@ -1,6 +1,5 @@
 name: Build, Push and Pull Docker Image
 
-# Trigger on push to main or specified branches
 on:
   push:
     branches:
