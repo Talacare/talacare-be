@@ -82,6 +82,7 @@ export class ExportDataService {
     });
 
     worksheet.columns = [
+      { header: 'User', key: 'userId' },
       { header: 'Game Type', key: 'gameType' },
       { header: 'Score', key: 'score' },
       { header: 'Start Time', key: 'startTime' },
