@@ -46,13 +46,6 @@ export class ScheduleController {
     });
   }
 
-  @Get('/all')
-  @HttpCode(HttpStatus.OK)
-  async getAll(@Query() query: GetScheduleQueryDTO): Promise<Schedule[]> {
-    const schedules = await this.scheduleService.getAll(query);
-    return this.responseUtil.response({}, { data: schedules });
-  }
-
   @Get('')
   @HttpCode(HttpStatus.OK)
   async get(@Req() request: CustomRequest): Promise<GetSchedule[]> {
